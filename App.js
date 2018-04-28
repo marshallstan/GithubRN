@@ -8,7 +8,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Image,
-  View
+  View,
+  Text
 } from 'react-native';
 import codePush from 'react-native-code-push';
 import TabNavigator from 'react-native-tab-navigator';
@@ -60,7 +61,9 @@ export default class App extends Component<Props> {
             )}
             badgeText="1"
             onPress={() => this.setState({ selectedTab: 'tab_popular' })}>
-            <View style={styles.page1} />
+            <View style={styles.page1}>
+              <Text onPress={this.update}>UPDATE</Text>
+            </View>
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tab_trending'}
