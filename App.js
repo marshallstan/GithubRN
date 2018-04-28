@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import codePush from 'react-native-code-push';
 import TabNavigator from 'react-native-tab-navigator';
+import NavigationBar from './js/NavigationBar';
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' +
@@ -43,6 +44,11 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationBar
+          statusBar={{
+            backgroundColor: 'red'
+          }}
+          title='Boy' />
         <TabNavigator>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tab_popular'}
