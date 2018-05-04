@@ -14,8 +14,9 @@ export default class Text2 extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray',
-    justifyContent: 'center'
+    // backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   text: {
     fontSize: 20

@@ -11,12 +11,6 @@ export const MainTab = TabNavigator(
       screen:Home,
       navigationOptions:({navigation}) => ({
         tabBarLabel:'首页',
-        labelStyle:{
-          fontSize:10,
-          color:'red'
-        },
-        activeTintColor:'red',
-        activeBackgroundColor:'yellow',
         tabBarIcon:({focused,tintColor}) => (
           <TabBarItem
             tintColor={tintColor}
@@ -43,22 +37,18 @@ export const MainTab = TabNavigator(
       }),
     },
   },
-
   {
-    tabBarComponent:TabBarBottom,
-    tabBarPosition:'bottom',
-    swipeEnabled:false, //不允许滑动切换Tab
-    animationEnabled:false,
-    lazy:true,//允许懒加载
-    tabBarOptions:{
-      activeTintColor:'#06c1ae',
-      inactiveTintColor:'#979797',
-      style:{backgroundColor:'#ffffff',
-
-      },
-      labelStyle: {
-        fontSize: 20, // 文字大小
-      },
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
+    animationEnabled: false,
+    lazy: true,
+    tabBarOptions: {
+      activeTintColor: '#06c1ae',
+      inactiveTintColor: '#979797',
+      style: {
+        backgroundColor: '#ffffff'
+      }
     }
   }
 );

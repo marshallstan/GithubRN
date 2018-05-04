@@ -14,8 +14,8 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   text: {
     fontSize: 20

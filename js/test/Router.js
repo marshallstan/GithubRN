@@ -1,31 +1,55 @@
 import React,{Component} from 'react';
 import {
-  StackNavigator,
+  StackNavigator
 } from 'react-navigation';
+import {View, Button, Text} from 'react-native';
 
 import Home from './Home';
 import App from './App';
 import Test  from './Test';
 import {MainTab} from './MainTab';
 
-// 初始化StackNavigator
 export const  Routers = StackNavigator(
   {
-    // 将TabNavigator包裹在StackNavigator里面可以保证跳转页面的时候隐藏tabbar
     App:{
       screen:App,
+      navigationOptions: {
+        // header: null,
+        headerTitle: 'App'
+      }
     },
     MainTab:{
       screen:MainTab,
+      navigationOptions: {
+        // header: null,
+        title: 'MainTab',
+        // headerTitle: 'MainTab'
+      },
     },
     Home:{
       screen:Home,
+      navigationOptions: {
+        header: null
+      },
     },
     Test:{
       screen:Test,
+      navigationOptions: {
+        header: null
+      },
     },
   },
   {
-    initialRouteName: 'MainTab'
+    // initialRouteName: 'MainTab',
+    navigationOptions: {
+      headerTitleStyle: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        color: 'green'
+      },
+      headerRight: (
+        <View style={{height: 44,width: 55,justifyContent: 'center',paddingRight:15} }/>
+      )
+    }
   }
 );
