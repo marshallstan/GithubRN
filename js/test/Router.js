@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {
   StackNavigator
 } from 'react-navigation';
@@ -14,16 +14,13 @@ export const  Routers = StackNavigator(
     App:{
       screen:App,
       navigationOptions: {
-        // header: null,
         headerTitle: 'App'
       }
     },
     MainTab:{
       screen:MainTab,
       navigationOptions: {
-        // header: null,
         title: 'MainTab',
-        // headerTitle: 'MainTab'
       },
     },
     Home:{
@@ -47,9 +44,9 @@ export const  Routers = StackNavigator(
         alignSelf: 'center',
         color: 'green'
       },
-      headerRight: (
-        <View style={{height: 44,width: 55,justifyContent: 'center',paddingRight:15} }/>
-      )
+      // headerRight: (
+      //   <View style={{height: 44,width: 55,justifyContent: 'center',paddingRight:15} }/>
+      // )
     }
   }
 );

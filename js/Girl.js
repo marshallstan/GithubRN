@@ -2,24 +2,20 @@ import React, { Component } from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 export default class Girl extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      word: ''
-    };
-  }
   render() {
+    const { params } = this.props.navigation.state;
+    const word = params ? params.word : null;
     return (
       <View style={styles.container}>
         <Text style={styles.text}>I am a girl</Text>
+        <Text style={styles.text}>我收到了：{word}</Text>
         <Text
           style={styles.text}
-          onPress={word=>{
-            this.setState({word});
+          onPress={()=>{
+            this.props.navigation.navigate('Boy', {word: '一盒巧克力'});
           }}>
-
+          回赠巧克力
         </Text>
-        <Text style={styles.text}>{this.state.word}</Text>
       </View>
     );
   }
@@ -28,7 +24,6 @@ export default class Girl extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
     justifyContent: 'center'
   },
   text: {
