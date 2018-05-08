@@ -9,38 +9,36 @@ import {
 import NavigationBar from './NavigationBar';
 
 export default class Boy extends Component {
-  componentDidMount(){
-    this.props.navigation.setParams({
-      navigatePress:this.navigatePress
-    })
-  }
-  static renderButton(image) {
-    return (
-      <TouchableOpacity>
+  static navigationOptions = ({navigation}) => {
+    let renderButton = image => (
+      <TouchableOpacity onPress={()=>{navigation.goBack()}}>
         <Image
-          style={{width: 23, height: 23}}
+          style={{width: 23, height: 23, margin: 5}}
           source={image} />
       </TouchableOpacity>
     );
+    return {
+      header: (
+        <NavigationBar
+          title="Boy"
+          statusBar={{
+            backgroundColor: '#ee6363'
+          }}
+          leftButton={
+            renderButton(require('../res/images/ic_arrow_back_white_36pt.png'))
+          }
+          rightButton={
+            renderButton(require('../res/images/ic_star.png'))
+          }
+          style={{
+            backgroundColor: '#ee6363'
+          }} />
+      ),
+    };
   };
-  static navigationOptions = ({navigation, screenProps}) => ({
-    header: (
-      <NavigationBar
-        title="Boy"
-        statusBar={{
-          backgroundColor: '#ee6363'
-        }}
-        leftButton={
-          Boy.renderButton(require('../res/images/ic_arrow_back_white_36pt.png'))
-        }
-        rightButton={
-          Boy.renderButton(require('../res/images/ic_star.png'))
-        }
-        style={{
-          backgroundColor: '#ee6363'
-        }} />
-    ),
-  });
+  componentDidMount(){
+    this.props.navigation.setParams({})
+  }
   render() {
     const { params } = this.props.navigation.state;
     const word = params ? params.word : null;

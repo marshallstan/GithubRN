@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StackNavigator
 } from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
 import Boy from './Boy';
 import Girl  from './Girl';
@@ -15,10 +16,9 @@ export const  Routers = StackNavigator(
       screen: Girl
     }
   }, {
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: 'gray'
-      }
-    }
+    headerMode: 'screen',
+    transitionConfig: ()=>({
+      screenInterpolator:CardStackStyleInterpolator.forHorizontal
+    })
   }
 );
