@@ -1,7 +1,31 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity
+} from 'react-native';
+import NavigationBar from './NavigationBar';
 
 export default class Girl extends Component {
+  static navigationOptions = {
+    header: (
+      <NavigationBar
+        title="Girl"
+        statusBar={{
+          backgroundColor: '#ee6363'
+        }}
+        leftButton={
+          <TouchableOpacity>
+            <Image source={require('../res/images/ic_arrow_back_white_36pt.png')} />
+          </TouchableOpacity>
+        }
+        style={{
+          backgroundColor: '#ee6363'
+        }} />
+    ),
+  };
   render() {
     const { params } = this.props.navigation.state;
     const word = params ? params.word : null;
@@ -24,7 +48,8 @@ export default class Girl extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   text: {
     fontSize: 22

@@ -46,7 +46,7 @@ export default class NavigationBar extends Component {
 
   render() {
     let status = (
-      <View style={styles.statusBar}>
+      <View style={[styles.statusBar, this.props.statusBar]}>
         <StatusBar {...this.props.statusBar} />
       </View>
     );
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
+    backgroundColor: 'red',
     flexDirection: 'row'
   },
   titleViewContainer: {
