@@ -8,8 +8,16 @@ import {
   FlatList
 } from 'react-native';
 import NavigationBar from './NavigationBar';
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 export default class FlatListTest extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    };
+    this.onLoad();
+  }
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -40,12 +48,25 @@ export default class FlatListTest extends Component {
   renderRow = item => {
     return (
       <View style={styles.row}>
-        <Text style={styles.text}>{item.key}</Text>
-        <Text style={styles.text}>{item.email}</Text>
+        <TouchableOpacity
+          onPress={()=>{
+            this.toast.show('你单击了:'+item.key, DURATION.LENGTH_SHORT)
+          }}>
+          <Text style={styles.text}>{item.key}</Text>
+          <Text style={styles.text}>{item.email}</Text>
+        </TouchableOpacity>
       </View>
     );
   };
   renderSeparator = () => <View style={styles.line} />;
+  renderFooter = () => <Image style={{width: '100%', height: 100}} source={{uri: 'https://images.gr-assets.com/hostedimages/1406479536ra/10555627.gif'}} />;
+  onLoad = () => {
+    setTimeout(()=>{
+      this.setState({
+        isLoading: false
+      })
+    }, 2000)
+  };
   render() {
     const data = [
       {email: "1@qq.com", key: "1"},
@@ -63,8 +84,12 @@ export default class FlatListTest extends Component {
         <FlatList
           data={data}
           ItemSeparatorComponent={this.renderSeparator}
+          ListFooterComponent={this.renderFooter}
           renderItem={({item}) => this.renderRow(item)}
+          onRefresh={() => this.onLoad()}
+          refreshing={this.state.isLoading}
         />
+        <Toast ref={toast=>{this.toast=toast}}/>
       </View>
     );
   }
