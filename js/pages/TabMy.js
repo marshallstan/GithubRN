@@ -6,9 +6,9 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import NavigationBar from './NavigationBar';
+import NavigationBar from '../common/NavigationBar';
 
-export default class Boy extends Component {
+export default class TabMy extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,15 +20,15 @@ export default class Boy extends Component {
     return {
       header: (
         <NavigationBar
-          title="Boy"
+          title="My"
           statusBar={{
             backgroundColor: '#ee6363'
           }}
           leftButton={
-            renderButton(require('../res/images/ic_arrow_back_white_36pt.png'))
+            renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
-            renderButton(require('../res/images/ic_star.png'))
+            renderButton(require('../../res/images/ic_star.png'))
           }
           style={{
             backgroundColor: '#ee6363'
@@ -37,31 +37,22 @@ export default class Boy extends Component {
     };
   };
   render() {
-    const { params } = this.props.navigation.state;
-    const word = params ? params.word : null;
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>I am a boy</Text>
-        <Text
-          style={styles.text}
-          onPress={()=>{
-            this.props.navigation.navigate('Girl', {word: '一枝玫瑰'})
-          }}>
-          send girl a rose.
-        </Text>
-        <Text style={styles.text}>{word}</Text>
+      <View style={styles.page}>
+        <Text style={styles.text}>我的</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
   text: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'green'
   }
 });
