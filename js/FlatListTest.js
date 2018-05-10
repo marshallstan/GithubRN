@@ -86,7 +86,7 @@ export default class FlatListTest extends Component {
           ItemSeparatorComponent={this.renderSeparator}
           ListFooterComponent={this.renderFooter}
           renderItem={({item}) => this.renderRow(item)}
-          onRefresh={() => this.onLoad()}
+          onRefresh={this.onLoad}
           refreshing={this.state.isLoading}
         />
         <Toast ref={toast=>{this.toast=toast}}/>

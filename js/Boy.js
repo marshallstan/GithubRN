@@ -36,9 +36,6 @@ export default class Boy extends Component {
       ),
     };
   };
-  componentDidMount(){
-    this.props.navigation.setParams({})
-  }
   render() {
     const { params } = this.props.navigation.state;
     const word = params ? params.word : null;

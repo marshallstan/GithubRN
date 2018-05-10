@@ -7,6 +7,7 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
 import Boy from './Boy';
 import Girl  from './Girl';
 import FlatListTest  from './FlatListTest';
+import FetchTest  from './FetchTest';
 
 export const  Routers = StackNavigator(
   {
@@ -18,9 +19,12 @@ export const  Routers = StackNavigator(
     },
     FlatListTest:{
       screen: FlatListTest
+    },
+    FetchTest:{
+      screen: FetchTest
     }
   }, {
-    initialRouteName: 'FlatListTest',
+    initialRouteName: 'FetchTest',
     headerMode: 'screen',
     transitionConfig: ()=>({
       screenInterpolator:CardStackStyleInterpolator.forHorizontal

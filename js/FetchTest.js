@@ -7,8 +7,15 @@ import {
   TouchableOpacity
 } from 'react-native';
 import NavigationBar from './NavigationBar';
+import axios from 'axios';
 
-export default class Girl extends Component {
+export default class FetchTest extends Component {
+  constructor() {
+    super();
+    this.state = {
+      result: ''
+    }
+  }
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,7 +27,7 @@ export default class Girl extends Component {
     return {
       header: (
         <NavigationBar
-          title="Girl"
+          title="FetchTest"
           statusBar={{
             backgroundColor: '#ee6363'
           }}
@@ -36,20 +43,43 @@ export default class Girl extends Component {
       ),
     };
   };
+  onLoad = url => {
+    axios.get(url)
+      .then(res=>{
+        let result = JSON.stringify(res.data);
+        this.setState({result})
+      })
+      .catch(err=>{this.setState({result: JSON.stringify(err)})})
+  };
+  onSubmit = (url, data) => {
+    axios.post(url, data)
+      .then(res=>{
+        let result = JSON.stringify(res.data);
+        this.setState({result});
+      })
+      .catch(err=>{this.setState({result: JSON.stringify(err)})})
+  };
   render() {
-    const { params } = this.props.navigation.state;
-    const word = params ? params.word : null;
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>I am a girl</Text>
-        <Text style={styles.text}>我收到了：{word}</Text>
         <Text
           style={styles.text}
           onPress={()=>{
-            this.props.navigation.navigate('Boy', {word: '一盒巧克力'});
+            this.onLoad('http://rap2api.taobao.org/app/mock/12933/tset')
           }}>
-          回赠巧克力
+          获取数据
         </Text>
+        <Text
+          style={styles.text}
+          onPress={()=>{
+            this.onSubmit('http://rap2api.taobao.org/app/mock/12933/submit', {
+              userName: 'xiaoming',
+              password: '132'
+            })
+          }}>
+          提交数据
+        </Text>
+        <Text style={{}}>返回结果: {this.state.result}</Text>
       </View>
     );
   }
@@ -58,10 +88,8 @@ export default class Girl extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   text: {
-    fontSize: 22
+    fontSize: 20
   }
 });
