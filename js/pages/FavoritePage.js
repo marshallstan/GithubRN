@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar';
 
-export default class TabPopular extends Component {
+export default class FavoritePage extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,7 +20,7 @@ export default class TabPopular extends Component {
     return {
       header: (
         <NavigationBar
-          title="Popular"
+          title="Favorite"
           statusBar={{
             backgroundColor: '#ee6363'
           }}
@@ -39,7 +39,7 @@ export default class TabPopular extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>热门</Text>
+        <Text style={styles.text}>收藏</Text>
       </View>
     );
   }
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: 'red'
+    color: 'blue'
   }
 });

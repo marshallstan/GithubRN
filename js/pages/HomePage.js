@@ -1,16 +1,16 @@
-import React,{ Component } from 'react';
-import TabPopular from './TabPopular';
-import TabTrending from './TabTrending';
-import TabFavorite from './TabFavorite';
-import TabMy from './TabMy';
+import React from 'react';
+import PopularPage from './PopularPage';
+import TrendingPage from './TrendingPage';
+import FavoritePage from './FavoritePage';
+import MyPage from './MyPage';
 import TabBarItem from '../common/TabBarItem'
 
-import {TabNavigator,TabBarBottom} from 'react-navigation';
+import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 export const HomePage = TabNavigator(
   {
     TabPopular: {
-      screen: TabPopular,
+      screen: PopularPage,
       navigationOptions: ({navigation}) => ({
         tabBarLabel: '热门',
         tabBarIcon: ({focused, tintColor}) => (
@@ -24,7 +24,7 @@ export const HomePage = TabNavigator(
       }),
     },
     TabTrending: {
-      screen: TabTrending,
+      screen: TrendingPage,
       navigationOptions: ({navigation}) => ({
         tabBarLabel: '趋势',
         tabBarIcon: ({focused, tintColor}) => (
@@ -38,7 +38,7 @@ export const HomePage = TabNavigator(
       }),
     },
     TabFavorite: {
-      screen: TabFavorite,
+      screen: FavoritePage,
       navigationOptions: ({navigation}) => ({
         tabBarLabel: '收藏',
         tabBarIcon: ({focused, tintColor}) => (
@@ -52,7 +52,7 @@ export const HomePage = TabNavigator(
       }),
     },
     TabMy: {
-      screen: TabMy,
+      screen: MyPage,
       navigationOptions: ({navigation}) => ({
         tabBarLabel: '我的',
         tabBarIcon: ({focused, tintColor}) => (

@@ -4,11 +4,14 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar';
+import PopularTab from '../common/PopularTab'
+import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 
-export default class TabFavorite extends Component {
+export default class PopularPage extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,7 +23,7 @@ export default class TabFavorite extends Component {
     return {
       header: (
         <NavigationBar
-          title="Favorite"
+          title="Popular"
           statusBar={{
             backgroundColor: '#ee6363'
           }}
@@ -39,7 +42,12 @@ export default class TabFavorite extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>收藏</Text>
+        <ScrollableTabView renderTabBar={()=><ScrollableTabBar />}>
+          <PopularTab tabLabel='Java'>Java</PopularTab>
+          <PopularTab tabLabel='IOS'>IOS</PopularTab>
+          <PopularTab tabLabel='Android'>Android</PopularTab>
+          <PopularTab tabLabel='Javascript'>Javascript</PopularTab>
+        </ScrollableTabView>
       </View>
     );
   }
@@ -48,11 +56,9 @@ export default class TabFavorite extends Component {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   text: {
     fontSize: 20,
-    color: 'blue'
+    color: 'red'
   }
 });

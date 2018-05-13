@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar';
 
-export default class TabTrending extends Component {
+export default class MyPage extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,7 +20,7 @@ export default class TabTrending extends Component {
     return {
       header: (
         <NavigationBar
-          title="Trending"
+          title="My"
           statusBar={{
             backgroundColor: '#ee6363'
           }}
@@ -39,7 +39,7 @@ export default class TabTrending extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>趋势</Text>
+        <Text style={styles.text}>我的</Text>
       </View>
     );
   }
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: 'yellow'
+    color: 'green'
   }
 });
