@@ -11,15 +11,15 @@ export default class PopularTab extends Component{
     super();
     this.dataRepository = new DataRepository();
     this.state = {
-      result: '',
       dataSource: [],
-      isLoading: true
+      isLoading: false
     }
   }
   componentDidMount() {
     this.loadData();
   }
   loadData = () => {
+    this.setState({isLoading: true});
     let url = URL + this.props.tabLabel + QUERY_STR;
     this.dataRepository.fetchNetRepository(url)
       .then(res=>{
@@ -29,14 +29,11 @@ export default class PopularTab extends Component{
           return d;
         });
         this.setState({
-          dataSource: this.state.dataSource.concat(items)
+          dataSource: this.state.dataSource.concat(items),
+          isLoading: false
         });
       })
-      .catch(err=>{
-        this.setState({
-          result: JSON.stringify(err)
-        });
-      });
+      .catch(err=>console.log(err));
   };
   renderSeparator = () => <View style={styles.line} />;
   renderFooter = () => <Image style={{width: '100%', height: 100}} source={{uri: 'https://images.gr-assets.com/hostedimages/1406479536ra/10555627.gif'}} />;
@@ -47,13 +44,12 @@ export default class PopularTab extends Component{
     const {dataSource, isLoading} = this.state;
     return (
       <View style={styles.container}>
-        <Text>{dataSource.length}</Text>
         <FlatList
           data={dataSource}
           // ItemSeparatorComponent={this.renderSeparator}
           // ListFooterComponent={this.renderFooter}
           renderItem={({item}) => this.renderRow(item)}
-          onRefresh={this.onLoad}
+          onRefresh={this.loadData}
           refreshing={isLoading}
         />
       </View>

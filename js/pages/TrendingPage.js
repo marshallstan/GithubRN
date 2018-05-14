@@ -21,18 +21,12 @@ export default class TrendingPage extends Component {
       header: (
         <NavigationBar
           title="Trending"
-          statusBar={{
-            backgroundColor: '#ee6363'
-          }}
           leftButton={
             renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
             renderButton(require('../../res/images/ic_star.png'))
-          }
-          style={{
-            backgroundColor: '#ee6363'
-          }} />
+          } />
       ),
     };
   };

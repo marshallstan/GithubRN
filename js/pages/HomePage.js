@@ -73,7 +73,7 @@ export const HomePage = TabNavigator(
     animationEnabled: false,
     lazy: true,
     tabBarOptions: {
-      activeTintColor: '#06c1ae',
+      activeTintColor: '#2196f3',
       inactiveTintColor: '#979797',
       style: {
         backgroundColor: '#ffffff'

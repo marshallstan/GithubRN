@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar';
 import PopularTab from '../common/PopularTab'
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
+import TabBar from "react-native-underline-tabbar";
 
 export default class PopularPage extends Component {
   static navigationOptions = ({navigation}) => {
@@ -24,29 +25,35 @@ export default class PopularPage extends Component {
       header: (
         <NavigationBar
           title="Popular"
-          statusBar={{
-            backgroundColor: '#ee6363'
-          }}
           leftButton={
             renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
             renderButton(require('../../res/images/ic_star.png'))
-          }
-          style={{
-            backgroundColor: '#ee6363'
-          }} />
+          } />
       ),
     };
   };
   render() {
     return (
       <View style={styles.page}>
-        <ScrollableTabView renderTabBar={()=><ScrollableTabBar />}>
+        <ScrollableTabView
+          tabBarBackgroundColor='#2196f3'
+          tabBarActiveTextColor='#fff'
+          tabBarInactiveTextColor='mintcream'
+          tabBarUnderlineStyle={{
+            backgroundColor: '#e7e7e7',
+            height: 2,
+          }}
+          renderTabBar={()=><DefaultTabBar />}>
           <PopularTab tabLabel='Java'>Java</PopularTab>
           <PopularTab tabLabel='IOS'>IOS</PopularTab>
           <PopularTab tabLabel='Android'>Android</PopularTab>
           <PopularTab tabLabel='Javascript'>Javascript</PopularTab>
+          {/*<PopularTab tabLabel={{label: 'Java'}}>Java</PopularTab>*/}
+          {/*<PopularTab tabLabel={{label: 'IOS'}}>IOS</PopularTab>*/}
+          {/*<PopularTab tabLabel={{label: 'Android'}}>Android</PopularTab>*/}
+          {/*<PopularTab tabLabel={{label: 'Javascript'}}>Javascript</PopularTab>*/}
         </ScrollableTabView>
       </View>
     );

@@ -4498,6 +4498,10 @@ react-native-tab-navigator@^0.3.4:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-underline-tabbar@^1.3.5:
+  version "1.3.5"
+  resolved "http://r.cnpmjs.org/react-native-underline-tabbar/download/react-native-underline-tabbar-1.3.5.tgz#058d1847f16320274c61d72401e8a26408ffe39f"
+
 react-native@^0.55.3:
   version "0.55.4"
   resolved "http://r.cnpmjs.org/react-native/download/react-native-0.55.4.tgz#eecffada3750a928e2ddd07cf11d857ae9751c30"

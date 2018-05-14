@@ -21,18 +21,12 @@ export default class MyPage extends Component {
       header: (
         <NavigationBar
           title="My"
-          statusBar={{
-            backgroundColor: '#ee6363'
-          }}
           leftButton={
             renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
             renderButton(require('../../res/images/ic_star.png'))
-          }
-          style={{
-            backgroundColor: '#ee6363'
-          }} />
+          } />
       ),
     };
   };
