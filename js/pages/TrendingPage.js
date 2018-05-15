@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar';
+import AsyncStorageTest from '../common/AsyncStorageTest';
 
 export default class TrendingPage extends Component {
   static navigationOptions = ({navigation}) => {
@@ -33,7 +34,7 @@ export default class TrendingPage extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>趋势</Text>
+        <AsyncStorageTest />
       </View>
     );
   }
@@ -41,9 +42,7 @@ export default class TrendingPage extends Component {
 
 const styles = StyleSheet.create({
   page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    flex: 1
   },
   text: {
     fontSize: 20,
