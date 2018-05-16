@@ -67,7 +67,7 @@ export const HomePage = TabNavigator(
     },
   },
   {
-    initialRouteName: 'TabTrending',
+    initialRouteName: 'TabMy',
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     swipeEnabled: false,

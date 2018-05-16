@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import NavigationBar from '../../common/NavigationBar';
+import CustomKeyPage from "./CustomKeyPage";
 
 export default class MyPage extends Component {
   static navigationOptions = ({navigation}) => {
@@ -33,7 +34,13 @@ export default class MyPage extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>我的</Text>
+        <Text
+          onPress={()=>{
+            this.props.navigation.navigate("CustomKeyPage")
+          }}
+          style={styles.text}>
+          我的
+        </Text>
       </View>
     );
   }
