@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DataRepository from "../expand/dao/DataRepository";
+import DataRepository from "../../expand/dao/DataRepository";
 import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
-import RepositoryCell from './RepositoryCell';
+import RepositoryCell from '../../common/RepositoryCell';
 
 const URL = 'http://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=starts';

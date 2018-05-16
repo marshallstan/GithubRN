@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
-import NavigationBar from '../common/NavigationBar';
-import PopularTab from '../common/PopularTab'
+import NavigationBar from '../../common/NavigationBar';
+import PopularTab from './PopularTab'
 import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
 import TabBar from "react-native-underline-tabbar";
 
@@ -26,10 +26,10 @@ export default class PopularPage extends Component {
         <NavigationBar
           title="Popular"
           leftButton={
-            renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
+            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
-            renderButton(require('../../res/images/ic_star.png'))
+            renderButton(require('../../../res/images/ic_star.png'))
           } />
       ),
     };

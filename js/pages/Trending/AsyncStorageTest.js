@@ -8,26 +8,54 @@ import {
   AsyncStorage,
   TextInput
 } from 'react-native';
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast from 'react-native-root-toast';
+
 const KEY = 'test';
 
 export default class AsyncStorageTest extends Component {
+  constructor() {
+    super();
+    this.state = {
+      toasting: false
+    };
+  }
+  showToast = msg => {
+    if (!this.state.toasting) {
+      Toast.show(msg, {
+        duration: 1800,
+        position: -80,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        onShow: () => {
+          this.setState({toasting: true});
+        },
+        onHidden: () => {
+          this.setState({toasting: false});
+        },
+      });
+    }
+  };
   onSave = () => {
-    // alert(111)
-    // this.toast.show('666', DURATION.LENGTH_SHORT)
     AsyncStorage.setItem(KEY, this.text, err=>{
-      // alert(222)
-      if (!err) {
-        // this.toast.show('保存成功', DURATION.LENGTH_SHORT)
-        alert(this.toast)
-      } else {
-        // this.toast.show('保存失败', DURATION.LENGTH_SHORT)
-        alert(444)
-      }
+      if (!err) this.showToast('保存成功');
+      else this.showToast('保存失败');
     })
   };
-  onRemove = () => {};
-  onFetch = () => {};
+  onRemove = () => {
+    AsyncStorage.removeItem(KEY, err=>{
+      if (!err) this.showToast('移除成功');
+      else this.showToast('移除失败');
+    })
+  };
+  onFetch = () => {
+    AsyncStorage.getItem(KEY, (err, res)=>{
+      if (!err) {
+        if (res) this.showToast('res: ' + res);
+        else this.showToast('不存在此KEY');
+      } else this.showToast('获取失败');
+    })
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -40,7 +68,6 @@ export default class AsyncStorageTest extends Component {
           <Text style={styles.tips} onPress={this.onRemove}>移除</Text>
           <Text style={styles.tips} onPress={this.onFetch}>取出</Text>
         </View>
-        <Toast ref={toast=>{this.toast=toast}} />
       </View>
     );
   }

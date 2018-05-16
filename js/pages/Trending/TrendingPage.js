@@ -6,9 +6,10 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import NavigationBar from '../common/NavigationBar';
+import NavigationBar from '../../common/NavigationBar';
+import AsyncStorageTest from './AsyncStorageTest';
 
-export default class MyPage extends Component {
+export default class TrendingPage extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,12 +21,12 @@ export default class MyPage extends Component {
     return {
       header: (
         <NavigationBar
-          title="My"
+          title="Trending"
           leftButton={
-            renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
+            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
-            renderButton(require('../../res/images/ic_star.png'))
+            renderButton(require('../../../res/images/ic_star.png'))
           } />
       ),
     };
@@ -33,7 +34,7 @@ export default class MyPage extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>我的</Text>
+        <AsyncStorageTest />
       </View>
     );
   }
@@ -41,12 +42,10 @@ export default class MyPage extends Component {
 
 const styles = StyleSheet.create({
   page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    flex: 1
   },
   text: {
     fontSize: 20,
-    color: 'green'
+    color: 'yellow'
   }
 });

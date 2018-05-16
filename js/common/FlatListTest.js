@@ -8,7 +8,7 @@ import {
   FlatList
 } from 'react-native';
 import NavigationBar from './NavigationBar';
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast from 'react-native-root-toast';
 
 export default class FlatListTest extends Component {
   constructor(props) {
@@ -34,10 +34,10 @@ export default class FlatListTest extends Component {
             backgroundColor: '#ee6363'
           }}
           leftButton={
-            renderButton(require('../res/images/ic_arrow_back_white_36pt.png'))
+            renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
-            renderButton(require('../res/images/ic_star.png'))
+            renderButton(require('../../res/images/ic_star.png'))
           }
           style={{
             backgroundColor: '#ee6363'
@@ -50,7 +50,26 @@ export default class FlatListTest extends Component {
       <View style={styles.row}>
         <TouchableOpacity
           onPress={()=>{
-            this.toast.show('你单击了:'+item.key, DURATION.LENGTH_SHORT)
+            Toast.show('This is a message', {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 0,
+              onShow: () => {
+                // calls on toast\`s appear animation start
+              },
+              onShown: () => {
+                // calls on toast\`s appear animation end.
+              },
+              onHide: () => {
+                // calls on toast\`s hide animation start.
+              },
+              onHidden: () => {
+                // calls on toast\`s hide animation end.
+              }
+            })
           }}>
           <Text style={styles.text}>{item.key}</Text>
           <Text style={styles.text}>{item.email}</Text>
@@ -89,7 +108,6 @@ export default class FlatListTest extends Component {
           onRefresh={this.onLoad}
           refreshing={this.state.isLoading}
         />
-        <Toast ref={toast=>{this.toast=toast}}/>
       </View>
     );
   }

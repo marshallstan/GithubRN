@@ -6,9 +6,9 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import NavigationBar from '../common/NavigationBar';
+import NavigationBar from '../../common/NavigationBar';
 
-export default class FavoritePage extends Component {
+export default class MyPage extends Component {
   static navigationOptions = ({navigation}) => {
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
@@ -20,12 +20,12 @@ export default class FavoritePage extends Component {
     return {
       header: (
         <NavigationBar
-          title="Favorite"
+          title="My"
           leftButton={
-            renderButton(require('../../res/images/ic_arrow_back_white_36pt.png'))
+            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
           }
           rightButton={
-            renderButton(require('../../res/images/ic_star.png'))
+            renderButton(require('../../../res/images/ic_star.png'))
           } />
       ),
     };
@@ -33,7 +33,7 @@ export default class FavoritePage extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>收藏</Text>
+        <Text style={styles.text}>我的</Text>
       </View>
     );
   }
@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: 'blue'
+    color: 'green'
   }
 });

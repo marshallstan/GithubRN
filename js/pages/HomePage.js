@@ -1,8 +1,8 @@
 import React from 'react';
-import PopularPage from './PopularPage';
-import TrendingPage from './TrendingPage';
-import FavoritePage from './FavoritePage';
-import MyPage from './MyPage';
+import PopularPage from './Popular/PopularPage';
+import TrendingPage from './Trending/TrendingPage';
+import FavoritePage from './Favorite/FavoritePage';
+import MyPage from './My/MyPage';
 import TabBarItem from '../common/TabBarItem'
 
 import {TabNavigator, TabBarBottom} from 'react-navigation';
