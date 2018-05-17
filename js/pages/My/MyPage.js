@@ -7,7 +7,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 import NavigationBar from '../../common/NavigationBar';
-import CustomKeyPage from "./CustomKeyPage";
 
 export default class MyPage extends Component {
   static navigationOptions = ({navigation}) => {

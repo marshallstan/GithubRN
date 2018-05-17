@@ -1,9 +1,32 @@
-import axios from 'axios';
+import React from 'react';
+import {AsyncStorage} from 'react-native';
+import keys from '../../../res/data/keys.json';
 
-let FLAG_LANGUAGE = {
-  flag_language: '',
-  flag_key: '',
+export let FLAG_LANGUAGE = {
+  flag_language: 'flag_language_language',
+  flag_key: 'flag_language_key',
 };
-export default class LanguageDao {
 
+export default class LanguageDao {
+  constructor(flag) {
+    this.flag = flag;
+  }
+  fetch() {
+    return (
+      AsyncStorage.getItem(this.flag)
+        .then(res=>{
+          if (res) {
+            return JSON.parse(res);
+          } else {
+            let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null;
+            this.save(data);
+            return data;
+          }
+        })
+    )
+  }
+  save(data) {
+    AsyncStorage.setItem(this.flag, JSON.stringify(data))
+      .catch(err=>{})
+  }
 }
