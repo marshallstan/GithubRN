@@ -11,20 +11,23 @@ import NavigationBar from '../../common/NavigationBar';
 import {getButton} from '../../util/ViewUtil';
 import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 import CheckBox from 'react-native-check-box'
+import {updateArray} from '../../util/ArrayUtil';
 
 export default class CustomKeyPage extends Component {
   constructor(props) {
     super(props);
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+    this.changeValues = [];
     this.state = {
       dataArray: [],
-      changeValues: []
     };
   }
   static navigationOptions = ({navigation}) => {
     let goBack = navigation.goBack;
+    let { params } = navigation.state;
+    let onSave = params ? params.onSave : ()=>{};
     let rightBtn = (
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableOpacity onPress={()=>{onSave()}}>
         <View style={{margin: 10}}>
           <Text style={styles.title}>保存</Text>
         </View>
@@ -43,7 +46,16 @@ export default class CustomKeyPage extends Component {
   };
   componentDidMount() {
     this.loadData();
+    this.props.navigation.setParams({
+      onSave: this.onSave
+    })
   }
+  onSave = () => {
+    if (this.changeValues.length) {
+      this.languageDao.save(this.state.dataArray);
+    }
+    this.props.navigation.goBack();
+  };
   loadData = () => {
     this.languageDao.fetch()
       .then(res=>{
@@ -66,7 +78,7 @@ export default class CustomKeyPage extends Component {
             {
               dataArray[i+1]
               ? this.renderCheckBox(dataArray[i+1])
-              : null
+              : <View style={{flex: 1, padding: 10}} />
             }
           </View>
           <View style={styles.line} />
@@ -84,6 +96,7 @@ export default class CustomKeyPage extends Component {
           padding: 10
         }}
         leftText={leftText}
+        isChecked={data.checked}
         checkedImage={
           <Image
             style={{tintColor: '#6495ed'}}
@@ -98,7 +111,8 @@ export default class CustomKeyPage extends Component {
     );
   };
   onClick = data => {
-
+    data.checked = !data.checked;
+    updateArray(this.changeValues, data);
   };
   render() {
     return (

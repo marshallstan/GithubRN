@@ -16,7 +16,11 @@ export default class PopularTab extends Component{
     }
   }
   componentDidMount() {
+    this.mounted = true;
     this.loadData();
+  }
+  componentWillUnmount() {
+    this.mounted = false;
   }
   loadData = () => {
     this.setState({isLoading: true});
@@ -28,10 +32,12 @@ export default class PopularTab extends Component{
           d.key = i+'';
           return d;
         });
-        this.setState({
-          dataSource: this.state.dataSource.concat(items),
-          isLoading: false
-        });
+        if (this.mounted) {
+          this.setState({
+            dataSource: this.state.dataSource.concat(items),
+            isLoading: false
+          });
+        }
       })
       .catch(err=>console.log(err));
   };
