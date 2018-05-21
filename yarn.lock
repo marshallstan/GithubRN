@@ -4503,6 +4503,10 @@ react-native-scrollable-tab-view@^0.8.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-sortable-listview@^0.2.8:
+  version "0.2.8"
+  resolved "http://r.cnpmjs.org/react-native-sortable-listview/download/react-native-sortable-listview-0.2.8.tgz#0d514fa73eb406a46baea96aa38a71e40257af90"
+
 react-native-tab-navigator@^0.3.4:
   version "0.3.4"
   resolved "http://r.cnpmjs.org/react-native-tab-navigator/download/react-native-tab-navigator-0.3.4.tgz#54a18f1ad06a09d4a0de81ff00416bc1b760c960"

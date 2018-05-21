@@ -5,7 +5,8 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import NavigationBar from '../../common/NavigationBar';
 import {getButton} from '../../util/ViewUtil';
@@ -23,9 +24,9 @@ export default class CustomKeyPage extends Component {
     };
   }
   static navigationOptions = ({navigation}) => {
-    let goBack = navigation.goBack;
     let { params } = navigation.state;
     let onSave = params ? params.onSave : ()=>{};
+    let onBack = params ? params.onBack : ()=>{};
     let rightBtn = (
       <TouchableOpacity onPress={()=>{onSave()}}>
         <View style={{margin: 10}}>
@@ -38,7 +39,7 @@ export default class CustomKeyPage extends Component {
         <NavigationBar
           title="自定义标签"
           leftButton={
-            getButton(goBack)
+            getButton(onBack)
           }
           rightButton={rightBtn} />
       ),
@@ -47,7 +48,8 @@ export default class CustomKeyPage extends Component {
   componentDidMount() {
     this.loadData();
     this.props.navigation.setParams({
-      onSave: this.onSave
+      onSave: this.onSave,
+      onBack: this.onBack
     })
   }
   onSave = () => {
@@ -55,6 +57,26 @@ export default class CustomKeyPage extends Component {
       this.languageDao.save(this.state.dataArray);
     }
     this.props.navigation.goBack();
+  };
+  onBack = () => {
+    if (this.changeValues.length) {
+      Alert.alert(
+        '提示',
+        '保存修改？',
+        [
+          {text: '不保存', onPress: () => {this.props.navigation.goBack()}, style: 'cancel'},
+          {
+            text: '保存',
+            onPress: () => {
+              this.onSave();
+            }
+          },
+        ],
+        { cancelable: false }
+      )
+    } else {
+      this.props.navigation.goBack();
+    }
   };
   loadData = () => {
     this.languageDao.fetch()

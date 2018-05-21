@@ -8,3 +8,9 @@ export const updateArray = (array, item) => {
   }
   array.push(item);
 };
+
+export const clone = from => {
+  if (!from) return [];
+  let [...newArray] = from;
+  return newArray;
+};

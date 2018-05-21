@@ -11,17 +11,14 @@ import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-s
 import NavigationBar from '../../common/NavigationBar';
 import PopularTab from './PopularTab'
 import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
+import TabBar from "react-native-underline-tabbar";
 
 export default class PopularPage extends Component {
   constructor(props) {
     super(props);
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
     this.state = {
-      languages: [{
-        "path": "react",
-        "name": "React",
-        "checked": true
-      }],
+      languages: [],
     };
   }
   static navigationOptions = ({navigation}) => {
@@ -68,10 +65,19 @@ export default class PopularPage extends Component {
           backgroundColor: '#e7e7e7',
           height: 2,
         }}
-        renderTabBar={()=><DefaultTabBar />}>
+        renderTabBar={()=><TabBar
+          tabBarStyle={{marginTop: 0, elevation: 2}}
+          tabMargin={35}
+          underlineColor='#e7e7e7'
+          tabBarTextStyle={{color: "#eee"}}
+          activeTabTextStyle={{color: "#fff"}} />}>
+        {/*renderTabBar={()=><ScrollableTabBar*/}
+          {/*tabStyle={{height: 39}}*/}
+          {/*style={{height: 40, borderWidth: 0, elevation: 2}} />}>*/}
         {
           languages.map((item, i) => (
-            item.checked && <PopularTab key={i} tabLabel={item.name} />
+            // item.checked && <PopularTab key={i} tabLabel={item.name} />
+            item.checked && <PopularTab key={i} tabLabel={{label: item.name}} />
           ))
         }
       </ScrollableTabView>
