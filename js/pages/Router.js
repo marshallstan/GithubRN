@@ -7,6 +7,7 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
 import WelcomePage from './WelcomePage';
 import {HomePage} from './HomePage';
 import CustomKeyPage from './My/CustomKeyPage';
+import SortKeyPage from './My/SortKeyPage';
 
 export const Routers = StackNavigator(
   {
@@ -21,6 +22,9 @@ export const Routers = StackNavigator(
     },
     CustomKeyPage:{
       screen: CustomKeyPage
+    },
+    SortKeyPage:{
+      screen: SortKeyPage
     }
   }, {
     initialRouteName: 'WelcomePage',

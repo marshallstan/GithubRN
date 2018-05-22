@@ -14,3 +14,9 @@ export const clone = from => {
   let [...newArray] = from;
   return newArray;
 };
+
+export const isEqual = (arr1, arr2) => {
+  if (!arr1 || !arr2) return false;
+  if (arr1.length !== arr2.length) return false;
+  return JSON.stringify(arr1) === JSON.stringify(arr2);
+};

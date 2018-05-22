@@ -40,6 +40,13 @@ export default class MyPage extends Component {
           style={styles.text}>
           我的
         </Text>
+        <Text
+          onPress={()=>{
+            this.props.navigation.navigate("SortKeyPage")
+          }}
+          style={styles.text}>
+          排序
+        </Text>
       </View>
     );
   }
