@@ -18,7 +18,6 @@ let SortCell = ({data, sortHandlers}) => (
   <TouchableHighlight
     underlayColor={'#eee'}
     style={styles.item}
-    delayLongPress={500}
     {...sortHandlers} >
     <View style={styles.row}>
       <Image
@@ -66,23 +65,44 @@ export default class SortKeyPage extends Component {
   componentDidMount() {
     this.loadData();
     this.props.navigation.setParams({
-      onBack: this.onBack
+      onBack: this.onBack,
+      onSave: this.onSave
     })
   }
   onBack = () => {
-    this.props.navigation.goBack();
-  };
-  onSave = () => {
-    if (isEqual(this.originalCheckedArray, this.state.checkedArray)) {
+    if (!isEqual(this.originalCheckedArray, this.state.checkedArray)) {
+      Alert.alert(
+        '提示',
+        '保存修改？',
+        [
+          {text: '不保存', onPress: () => {this.props.navigation.goBack()}, style: 'cancel'},
+          {
+            text: '保存',
+            onPress: () => {
+              this.onSave(true);
+            }
+          },
+        ],
+        {cancelable: false}
+      )
+    } else {
       this.props.navigation.goBack();
-      return;
     }
-    this.getSortResult();
-    this.languageDao.save(this.sortResultArray);
+  };
+  onSave = isChecked => {
+    if (isChecked || !isEqual(this.originalCheckedArray, this.state.checkedArray)) {
+      this.getSortResult();
+      this.languageDao.save(this.sortResultArray);
+    }
     this.props.navigation.goBack();
   };
   getSortResult = () => {
-
+    this.sortResultArray = clone(this.dataArrya);
+    for (let i = 0; i < this.originalCheckedArray.length; i++) {
+      let item = this.originalCheckedArray[i];
+      let index = this.dataArrya.indexOf(item);
+      this.sortResultArray.splice(index, 1, this.state.checkedArray[i])
+    }
   };
   loadData = () => {
     this.languageDao.fetch()
@@ -102,16 +122,14 @@ export default class SortKeyPage extends Component {
     this.originalCheckedArray = clone(checkedArray);
   };
   render() {
-    let {checkedArray} = this.state;
-    let order = Object.keys(checkedArray);
     return (
       <View style={styles.container}>
         <SortableListView
           style={{flex: 1}}
-          data={checkedArray}
-          order={order}
+          data={this.state.checkedArray}
+          order={Object.keys(this.state.checkedArray)}
           onRowMoved={e => {
-            order.splice(e.to, 0, order.splice(e.from, 1)[0]);
+            this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0]);
             this.forceUpdate();
           }}
           renderRow={row => <SortCell data={row} />}

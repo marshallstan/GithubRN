@@ -72,7 +72,7 @@ export default class CustomKeyPage extends Component {
             }
           },
         ],
-        { cancelable: false }
+        {cancelable: false}
       )
     } else {
       this.props.navigation.goBack();
