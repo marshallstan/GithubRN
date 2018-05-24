@@ -20,3 +20,11 @@ export const isEqual = (arr1, arr2) => {
   if (arr1.length !== arr2.length) return false;
   return JSON.stringify(arr1) === JSON.stringify(arr2);
 };
+
+export const remove = (arr, item) => {
+  if (!arr) return false;
+  let len = arr.length;
+  for (let i = 0; i < len; i++) {
+    if (item === arr[i]) arr.splice(i, 1);
+  }
+};

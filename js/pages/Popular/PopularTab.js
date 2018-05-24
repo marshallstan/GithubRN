@@ -24,7 +24,7 @@ export default class PopularTab extends Component{
   }
   loadData = () => {
     this.setState({isLoading: true});
-    let url = URL + this.props.tabLabel + QUERY_STR;
+    let url = URL + this.props.tabLabel.label + QUERY_STR;
     this.dataRepository.fetchNetRepository(url)
       .then(res=>{
         let items = res.data.items || [];

@@ -12,13 +12,15 @@ import NavigationBar from '../../common/NavigationBar';
 import {getButton} from '../../util/ViewUtil';
 import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 import CheckBox from 'react-native-check-box'
-import {updateArray} from '../../util/ArrayUtil';
+import {updateArray, remove} from '../../util/ArrayUtil';
 
 export default class CustomKeyPage extends Component {
   constructor(props) {
     super(props);
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
     this.changeValues = [];
+    let { params } = this.props.navigation.state;
+    this.isRemoveKey = params ? params.isRemoveKey : false;
     this.state = {
       dataArray: [],
     };
@@ -27,17 +29,18 @@ export default class CustomKeyPage extends Component {
     let { params } = navigation.state;
     let onSave = params ? params.onSave : ()=>{};
     let onBack = params ? params.onBack : ()=>{};
+    let isRemoveKey = params ? params.isRemoveKey : false;
     let rightBtn = (
       <TouchableOpacity onPress={()=>{onSave()}}>
         <View style={{margin: 10}}>
-          <Text style={styles.title}>保存</Text>
+          <Text style={styles.title}>{isRemoveKey?'移除':'保存'}</Text>
         </View>
       </TouchableOpacity>
     );
     return {
       header: (
         <NavigationBar
-          title="自定义标签"
+          title={isRemoveKey?'标签移除':'自定义标签'}
           leftButton={
             getButton(onBack)
           }
@@ -54,6 +57,11 @@ export default class CustomKeyPage extends Component {
   }
   onSave = () => {
     if (this.changeValues.length) {
+      if (this.isRemoveKey) {
+        for (let i = 0; i < this.changeValues.length; i++) {
+          remove(this.state.dataArray, this.changeValues[i])
+        }
+      }
       this.languageDao.save(this.state.dataArray);
     }
     this.props.navigation.goBack();
@@ -111,6 +119,7 @@ export default class CustomKeyPage extends Component {
   };
   renderCheckBox = data => {
     let leftText = data.name;
+    let isChecked = this.isRemoveKey ? false : data.checked;
     return (
       <CheckBox
         style={{
@@ -118,7 +127,7 @@ export default class CustomKeyPage extends Component {
           padding: 10
         }}
         leftText={leftText}
-        isChecked={data.checked}
+        isChecked={isChecked}
         checkedImage={
           <Image
             style={{tintColor: '#6495ed'}}
@@ -133,7 +142,7 @@ export default class CustomKeyPage extends Component {
     );
   };
   onClick = data => {
-    data.checked = !data.checked;
+    if (!this.isRemoveKey) data.checked = !data.checked;
     updateArray(this.changeValues, data);
   };
   render() {

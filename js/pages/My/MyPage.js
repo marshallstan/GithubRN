@@ -47,6 +47,13 @@ export default class MyPage extends Component {
           style={styles.text}>
           排序
         </Text>
+        <Text
+          onPress={()=>{
+            this.props.navigation.navigate("CustomKeyPage", {isRemoveKey: true})
+          }}
+          style={styles.text}>
+          移除
+        </Text>
       </View>
     );
   }
