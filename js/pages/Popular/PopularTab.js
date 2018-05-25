@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Toast from 'react-native-root-toast';
 import DataRepository from "../../expand/dao/DataRepository";
 import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
 import RepositoryCell from '../../common/RepositoryCell';
@@ -12,11 +13,25 @@ export default class PopularTab extends Component{
     this.dataRepository = new DataRepository();
     this.state = {
       dataSource: [],
-      isLoading: false
+      isLoading: false,
+      toasting: false
     }
   }
   componentDidMount() {
     this.mounted = true;
+    this.toastingConfig = {
+      duration: 200,
+      position: -80,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      onShow: () => {
+        if (this.mounted) this.setState({toasting: true});
+      },
+      onHidden: () => {
+        if (this.mounted) this.setState({toasting: false});
+      },
+    };
     this.loadData();
   }
   componentWillUnmount() {
@@ -25,24 +40,48 @@ export default class PopularTab extends Component{
   loadData = () => {
     this.setState({isLoading: true});
     let url = URL + this.props.tabLabel.label + QUERY_STR;
-    this.dataRepository.fetchNetRepository(url)
+    this.dataRepository.fetchRepository(url)
       .then(res=>{
-        let items = res.data.items || [];
+        let items = res.items || [];
         items = items.map((d, i)=>{
           d.key = i+'';
           return d;
         });
         if (this.mounted) {
           this.setState({
-            dataSource: this.state.dataSource.concat(items),
+            dataSource: items,
             isLoading: false
           });
         }
+        if (res.updateAt && !this.dataRepository.isNew(res.updateAt)) {
+          Toast.show('数据过期！', {...this.toastingConfig, onShow: ()=>{}});
+          this.setState({isLoading: true});
+          return this.dataRepository.fetchNetRepository(url)
+        } else if (res.updateAt) {
+          Toast.show('缓存数据！', this.toastingConfig);
+        } else {
+          Toast.show('网络数据！', this.toastingConfig);
+        }
       })
-      .catch(err=>console.log(err));
+      .then(res=>{
+        if (!res || !res.items || !res.items.length) return;
+        let items = res.items.map((d, i)=>{
+          d.key = i+'';
+          return d;
+        });
+        if (this.mounted) {
+          this.setState({
+            dataSource: items,
+            isLoading: false
+          });
+        }
+        Toast.show('网络数据！', this.toastingConfig);
+      })
+      .catch(err=>{
+        console.log(err);
+        this.setState({isLoading: false})
+      });
   };
-  renderSeparator = () => <View style={styles.line} />;
-  renderFooter = () => <Image style={{width: '100%', height: 100}} source={{uri: 'https://images.gr-assets.com/hostedimages/1406479536ra/10555627.gif'}} />;
   renderRow = data => {
     return <RepositoryCell data={data} />;
   };
@@ -52,8 +91,6 @@ export default class PopularTab extends Component{
       <View style={styles.container}>
         <FlatList
           data={dataSource}
-          // ItemSeparatorComponent={this.renderSeparator}
-          // ListFooterComponent={this.renderFooter}
           renderItem={({item}) => this.renderRow(item)}
           onRefresh={this.loadData}
           refreshing={isLoading}

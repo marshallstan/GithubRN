@@ -71,12 +71,8 @@ export default class PopularPage extends Component {
           underlineColor='#e7e7e7'
           tabBarTextStyle={{color: "#eee"}}
           activeTabTextStyle={{color: "#fff"}} />}>
-        {/*renderTabBar={()=><ScrollableTabBar*/}
-          {/*tabStyle={{height: 39}}*/}
-          {/*style={{height: 40, borderWidth: 0, elevation: 2}} />}>*/}
         {
           languages.map((item, i) => (
-            // item.checked && <PopularTab key={i} tabLabel={item.name} />
             item.checked && <PopularTab key={i} tabLabel={{label: item.name}} />
           ))
         }
