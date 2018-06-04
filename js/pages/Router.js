@@ -8,6 +8,7 @@ import WelcomePage from './WelcomePage';
 import {HomePage} from './HomePage';
 import CustomKeyPage from './My/CustomKeyPage';
 import SortKeyPage from './My/SortKeyPage';
+import RepositoryDetail from "./Popular/RepositoryDetail";
 
 export const Routers = StackNavigator(
   {
@@ -25,6 +26,9 @@ export const Routers = StackNavigator(
     },
     SortKeyPage:{
       screen: SortKeyPage
+    },
+    RepositoryDetail:{
+      screen: RepositoryDetail
     }
   }, {
     initialRouteName: 'WelcomePage',

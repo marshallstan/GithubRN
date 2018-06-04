@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import NavigationBar from '../../common/NavigationBar';
+import WebViewTest from '../../common/WebViewTest';
 
 export default class FavoritePage extends Component {
   static navigationOptions = ({navigation}) => {
@@ -33,7 +34,7 @@ export default class FavoritePage extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>收藏</Text>
+        <WebViewTest />
       </View>
     );
   }
@@ -42,11 +43,5 @@ export default class FavoritePage extends Component {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  text: {
-    fontSize: 20,
-    color: 'blue'
   }
 });

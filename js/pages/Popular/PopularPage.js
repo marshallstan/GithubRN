@@ -73,7 +73,7 @@ export default class PopularPage extends Component {
           activeTabTextStyle={{color: "#fff"}} />}>
         {
           languages.map((item, i) => (
-            item.checked && <PopularTab key={i} tabLabel={{label: item.name}} />
+            item.checked && <PopularTab key={i} tabLabel={{label: item.name}} {...this.props} />
           ))
         }
       </ScrollableTabView>

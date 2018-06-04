@@ -3,6 +3,7 @@ import Toast from 'react-native-root-toast';
 import DataRepository from "../../expand/dao/DataRepository";
 import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
 import RepositoryCell from '../../common/RepositoryCell';
+import RepositoryDetail from "./RepositoryDetail";
 
 const URL = 'http://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=starts';
@@ -20,7 +21,7 @@ export default class PopularTab extends Component{
   componentDidMount() {
     this.mounted = true;
     this.toastingConfig = {
-      duration: 200,
+      duration: 500,
       position: -80,
       shadow: true,
       animation: true,
@@ -83,7 +84,13 @@ export default class PopularTab extends Component{
       });
   };
   renderRow = data => {
-    return <RepositoryCell data={data} />;
+    return <RepositoryCell onSelect={()=>this.onSelect(data)} data={data} />;
+  };
+  onSelect = item => {
+    this.props.navigation.navigate("RepositoryDetail", {
+      item: item,
+      ...this.props
+    })
   };
   render() {
     const {dataSource, isLoading} = this.state;

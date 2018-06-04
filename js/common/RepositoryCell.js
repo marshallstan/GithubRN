@@ -3,9 +3,9 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 
 export default class RepositoryCell extends Component{
   render() {
-    const {data} = this.props;
+    const {data, onSelect} = this.props;
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity onPress={onSelect} style={styles.container}>
         <View style={styles.cell_container}>
           <Text style={styles.title}>{data.full_name}</Text>
           <Text style={styles.des}>{data.description}</Text>

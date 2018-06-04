@@ -50,7 +50,7 @@ export default class DataRepository {
     let tDate = new Date(longTime);
     if (cDate.getMonth() !== tDate.getMonth()) return false;
     if (cDate.getDay() !== tDate.getDay()) return false;
-    if (cDate.getHours() - tDate.getHours() > 4) return false;
+    if (cDate.getHours() - tDate.getHours() > 1) return false;
     return true;
   };
 }
