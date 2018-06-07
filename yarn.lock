@@ -428,6 +428,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+GitHubTrending@^3.0.0:
+  version "3.0.0"
+  resolved "http://r.cnpmjs.org/GitHubTrending/download/GitHubTrending-3.0.0.tgz#554ad6ffc3feddcb367d6b170f309cbf80c54964"
+
 abab@^1.0.4:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/abab/download/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"

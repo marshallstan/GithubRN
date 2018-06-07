@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Toast from 'react-native-root-toast';
-import DataRepository from "../../expand/dao/DataRepository";
+import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository";
 import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
 import RepositoryCell from '../../common/RepositoryCell';
-import RepositoryDetail from "./RepositoryDetail";
+import RepositoryDetail from './RepositoryDetail';
 
 const URL = 'http://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=starts';
@@ -11,7 +11,7 @@ const QUERY_STR = '&sort=starts';
 export default class PopularTab extends Component{
   constructor() {
     super();
-    this.dataRepository = new DataRepository();
+    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
     this.state = {
       dataSource: [],
       isLoading: false,

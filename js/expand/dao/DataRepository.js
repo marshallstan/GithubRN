@@ -1,8 +1,18 @@
 import axios from 'axios';
 import {AsyncStorage} from 'react-native';
 import {FLAG_LANGUAGE} from "./LanguageDao";
+import GitHubTrending from 'GitHubTrending/trending/GitHubTrending';
 
+export let FLAG_STORAGE = {
+  flag_popular: 'popular',
+  flag_trending: 'trending'
+};
 export default class DataRepository {
+  constructor(flag) {
+    this.flag = flag;
+    if (flag === FLAG_STORAGE.flag_trending)
+      this.trending = new GitHubTrending();
+  }
   fetchRepository = url => {
     return new Promise(resolve => {
       this.fetchLocalRepository(url)
@@ -29,16 +39,30 @@ export default class DataRepository {
     )
   };
   fetchNetRepository = url => {
-    return (
-      axios.get(url)
-        .then(res=>{
-          if (!res) return new Error('responseData is null.');
-          else {
-            res.data && this.saveRepository(url, res.data.items);
-            return res.data;
-          }
-        })
-    );
+    if (this.flag === FLAG_STORAGE.flag_trending) {
+      return (
+        this.trending.fetchTrending(url)
+          .then(res=>{
+            console.log(res)
+            if (!res) return new Error('trendingData is null.');
+            else {
+              res && this.saveRepository(url, res.items);
+              return res;
+            }
+          })
+      )
+    } else {
+      return (
+        axios.get(url)
+          .then(res=>{
+            if (!res) return new Error('popularData is null.');
+            else {
+              res.data && this.saveRepository(url, res.data.items);
+              return res.data;
+            }
+          })
+      );
+    }
   };
   saveRepository = (url, items, callback) => {
     if (!url || !items) return;
