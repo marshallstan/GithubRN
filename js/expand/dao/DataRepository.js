@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {AsyncStorage} from 'react-native';
-import GitHubTrending from 'GitHubTrending/trending/GitHubTrending';
+import GitHubTrending from '../../common/GitHubTrending/GitHubTrending';
 
 export let FLAG_STORAGE = {
   flag_popular: 'popular',

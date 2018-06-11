@@ -44,7 +44,6 @@ export default class TrendingTab extends Component{
     let url = this.getFetchUrl('?since=today', this.props.tabLabel.label);
     this.dataRepository.fetchRepository(url)
       .then(res=>{
-        console.log(res);
         let items = res.items || [];
         items = items.map((d, i)=>{
           d.key = i+'';

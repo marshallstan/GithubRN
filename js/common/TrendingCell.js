@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   image: {
     width: 22,
     height: 22,
+    marginRight: 2
   },
   title: {
     fontSize: 16,
