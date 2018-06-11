@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {AsyncStorage} from 'react-native';
-import {FLAG_LANGUAGE} from "./LanguageDao";
 import GitHubTrending from 'GitHubTrending/trending/GitHubTrending';
 
 export let FLAG_STORAGE = {
@@ -43,11 +42,10 @@ export default class DataRepository {
       return (
         this.trending.fetchTrending(url)
           .then(res=>{
-            console.log(res)
             if (!res) return new Error('trendingData is null.');
             else {
-              res && this.saveRepository(url, res.items);
-              return res;
+              res && this.saveRepository(url, res);
+              return {items: res};
             }
           })
       )

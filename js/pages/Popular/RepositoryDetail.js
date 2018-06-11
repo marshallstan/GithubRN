@@ -9,13 +9,16 @@ import {
 import {getButton} from '../../util/ViewUtil';
 import NavigationBar from '../../common/NavigationBar';
 
+const PRE_URL = 'https://github.com/';
+
 export default class RepositoryDetail extends Component {
   constructor(props) {
     super(props);
     let { params } = this.props.navigation.state;
     let item = params ? params.item : {};
+    let url = item.html_url || PRE_URL + item.fullName;
     this.state = {
-      url: item.html_url || 'http://www.baidu.com',
+      url: url,
       canGoBack: false,
     };
   }
@@ -23,7 +26,7 @@ export default class RepositoryDetail extends Component {
     let { params } = navigation.state;
     let onBack = params ? params.onBack : ()=>{};
     let item = params ? params.item : {};
-    let title = item.full_name || '';
+    let title = item.full_name || item.fullName;
     // let renderButton = image => (
     //   <TouchableOpacity onPress={()=>{navigation.goBack()}}>
     //     <Image

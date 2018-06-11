@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import Toast from 'react-native-root-toast';
-import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository";
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
-import RepositoryCell from '../../common/RepositoryCell';
+import React, { Component } from 'react'
+import Toast from 'react-native-root-toast'
+import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository"
+import {View, Text, FlatList, Image, StyleSheet} from 'react-native'
+import TrendingCell from '../../common/TrendingCell'
 
-const URL = 'http://api.github.com/search/repositories?q=';
-const QUERY_STR = '&sort=starts';
+const API_URL = 'https://github.com/trending/';
 
-export default class PopularTab extends Component{
+export default class TrendingTab extends Component{
   constructor() {
     super();
-    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
+    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
     this.state = {
       dataSource: [],
       isLoading: false,
@@ -37,11 +36,15 @@ export default class PopularTab extends Component{
   componentWillUnmount() {
     this.mounted = false;
   }
+  getFetchUrl = (timeSpan, category) => {
+    return API_URL + category + timeSpan;
+  };
   loadData = () => {
     this.setState({isLoading: true});
-    let url = URL + this.props.tabLabel.label + QUERY_STR;
+    let url = this.getFetchUrl('?since=today', this.props.tabLabel.label);
     this.dataRepository.fetchRepository(url)
       .then(res=>{
+        console.log(res);
         let items = res.items || [];
         items = items.map((d, i)=>{
           d.key = i+'';
@@ -83,7 +86,7 @@ export default class PopularTab extends Component{
       });
   };
   renderRow = data => {
-    return <RepositoryCell onSelect={()=>this.onSelect(data)} data={data} />;
+    return <TrendingCell onSelect={()=>this.onSelect(data)} data={data} />;
   };
   onSelect = item => {
     this.props.navigation.navigate("RepositoryDetail", {
