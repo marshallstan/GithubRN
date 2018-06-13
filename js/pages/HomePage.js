@@ -12,7 +12,7 @@ export const HomePage = TabNavigator(
     TabPopular: {
       screen: PopularPage,
       navigationOptions: ({navigation}) => ({
-        tabBarLabel: '热门',
+        tabBarLabel: 'Popular',
         tabBarIcon: ({focused, tintColor}) => (
           <TabBarItem
             tintColor={tintColor}
@@ -26,7 +26,7 @@ export const HomePage = TabNavigator(
     TabTrending: {
       screen: TrendingPage,
       navigationOptions: ({navigation}) => ({
-        tabBarLabel: '趋势',
+        tabBarLabel: 'Trending',
         tabBarIcon: ({focused, tintColor}) => (
           <TabBarItem
             tintColor={tintColor}
@@ -40,7 +40,7 @@ export const HomePage = TabNavigator(
     TabFavorite: {
       screen: FavoritePage,
       navigationOptions: ({navigation}) => ({
-        tabBarLabel: '收藏',
+        tabBarLabel: 'Favorite',
         tabBarIcon: ({focused, tintColor}) => (
           <TabBarItem
             tintColor={tintColor}
@@ -54,7 +54,7 @@ export const HomePage = TabNavigator(
     TabMy: {
       screen: MyPage,
       navigationOptions: ({navigation}) => ({
-        tabBarLabel: '我的',
+        tabBarLabel: 'My',
         tabBarIcon: ({focused, tintColor}) => (
           <TabBarItem
             tintColor={tintColor}
@@ -67,7 +67,7 @@ export const HomePage = TabNavigator(
     },
   },
   {
-    initialRouteName: 'TabTrending',
+    initialRouteName: 'TabMy',
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     swipeEnabled: false,

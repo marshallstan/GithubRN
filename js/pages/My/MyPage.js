@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
   Text,
   Image,
   TouchableOpacity
-} from 'react-native';
-import NavigationBar from '../../common/NavigationBar';
+} from 'react-native'
+import NavigationBar from '../../common/NavigationBar'
+import {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 
 export default class MyPage extends Component {
   static navigationOptions = ({navigation}) => {
@@ -35,24 +36,37 @@ export default class MyPage extends Component {
       <View style={styles.page}>
         <Text
           onPress={()=>{
-            this.props.navigation.navigate("CustomKeyPage")
+            this.props.navigation.navigate("CustomKeyPage", {
+              flag: FLAG_LANGUAGE.flag_key
+            })
           }}
           style={styles.text}>
-          我的
+          key
+        </Text>
+        <Text
+          onPress={()=>{
+            this.props.navigation.navigate("CustomKeyPage", {
+              flag: FLAG_LANGUAGE.flag_language
+            })
+          }}
+          style={styles.text}>
+          language
         </Text>
         <Text
           onPress={()=>{
             this.props.navigation.navigate("SortKeyPage")
           }}
           style={styles.text}>
-          排序
+          key sort
         </Text>
         <Text
           onPress={()=>{
-            this.props.navigation.navigate("CustomKeyPage", {isRemoveKey: true})
+            this.props.navigation.navigate("CustomKeyPage", {
+              isRemoveKey: true
+            })
           }}
           style={styles.text}>
-          移除
+          key delete
         </Text>
       </View>
     );
