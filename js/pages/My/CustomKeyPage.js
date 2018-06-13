@@ -31,7 +31,7 @@ export default class CustomKeyPage extends Component {
     let onSave = params ? params.onSave : ()=>{};
     let onBack = params ? params.onBack : ()=>{};
     let isRemoveKey = params ? params.isRemoveKey : false;
-    let flag = params ? params.flag : FLAG_LANGUAGE.flag_key;
+    let flag = (params && params.flag) ? params.flag : FLAG_LANGUAGE.flag_key;
     let title = isRemoveKey ? 'Delete Key' : 'Custom Key';
     title = flag === FLAG_LANGUAGE.flag_language ? 'Custom Language' : title;
     let rightBtn = (

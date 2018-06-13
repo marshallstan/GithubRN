@@ -33,17 +33,19 @@ export default class SortKeyPage extends Component {
     let { params } = navigation.state;
     let onBack = params ? params.onBack : ()=>{};
     let onSave = params ? params.onSave : ()=>{};
+    let flag = (params && params.flag) ? params.flag : FLAG_LANGUAGE.flag_key;
+    let title = flag === FLAG_LANGUAGE.flag_language ? 'Language Sort' : 'Key Sort';
     let rightBtn = (
       <TouchableOpacity onPress={()=>onSave()}>
         <View style={{margin: 10}}>
-          <Text style={styles.title}>保存</Text>
+          <Text style={styles.title}>Save</Text>
         </View>
       </TouchableOpacity>
     );
     return {
       header: (
         <NavigationBar
-          title="标签排序"
+          title={title}
           leftButton={
             getButton(onBack)
           }
@@ -52,32 +54,36 @@ export default class SortKeyPage extends Component {
       ),
     };
   };
-  constructor() {
-    super();
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+  constructor(props) {
+    super(props);
     this.dataArrya = [];
     this.sortResultArray = [];
     this.originalCheckedArray = [];
+
+    let { params } = this.props.navigation.state;
+    this.flag = (params && params.flag) ? params.flag : FLAG_LANGUAGE.flag_key;
+    this.languageDao = new LanguageDao(this.flag);
+
     this.state = {
       checkedArray: []
     };
   }
   componentDidMount() {
-    this.loadData();
     this.props.navigation.setParams({
       onBack: this.onBack,
       onSave: this.onSave
-    })
+    });
+    this.loadData();
   }
   onBack = () => {
     if (!isEqual(this.originalCheckedArray, this.state.checkedArray)) {
       Alert.alert(
-        '提示',
-        '保存修改？',
+        'Tips',
+        'Save changes？',
         [
-          {text: '不保存', onPress: () => {this.props.navigation.goBack()}, style: 'cancel'},
+          {text: "Don't save", onPress: () => {this.props.navigation.goBack()}, style: 'cancel'},
           {
-            text: '保存',
+            text: 'Save',
             onPress: () => {
               this.onSave(true);
             }

@@ -54,10 +54,21 @@ export default class MyPage extends Component {
         </Text>
         <Text
           onPress={()=>{
-            this.props.navigation.navigate("SortKeyPage")
+            this.props.navigation.navigate("SortKeyPage", {
+              flag: FLAG_LANGUAGE.flag_key
+            })
           }}
           style={styles.text}>
           key sort
+        </Text>
+        <Text
+          onPress={()=>{
+            this.props.navigation.navigate("SortKeyPage", {
+              flag: FLAG_LANGUAGE.flag_language
+            })
+          }}
+          style={styles.text}>
+          language sort
         </Text>
         <Text
           onPress={()=>{
