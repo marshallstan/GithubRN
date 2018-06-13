@@ -54,13 +54,13 @@ export default class PopularTab extends Component{
           });
         }
         if (res.updateAt && !this.dataRepository.isNew(res.updateAt)) {
-          Toast.show('数据过期！', {...this.toastingConfig, onShow: ()=>{}});
+          Toast.show('Expired!', {...this.toastingConfig, onShow: ()=>{}});
           this.setState({isLoading: true});
           return this.dataRepository.fetchNetRepository(url)
         } else if (res.updateAt) {
-          Toast.show('缓存数据！', this.toastingConfig);
+          Toast.show('Local data!', this.toastingConfig);
         } else {
-          Toast.show('网络数据！', this.toastingConfig);
+          Toast.show('Network data!', this.toastingConfig);
         }
       })
       .then(res=>{
@@ -75,7 +75,7 @@ export default class PopularTab extends Component{
             isLoading: false
           });
         }
-        Toast.show('网络数据！', this.toastingConfig);
+        Toast.show('Network data!', this.toastingConfig);
       })
       .catch(err=>{
         console.log(err);
