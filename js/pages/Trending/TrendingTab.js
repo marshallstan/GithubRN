@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Toast from 'react-native-root-toast'
 import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository"
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native'
+import {View, FlatList, StyleSheet} from 'react-native'
 import TrendingCell from '../../common/TrendingCell'
 
 const API_URL = 'https://github.com/trending/';
@@ -31,17 +31,22 @@ export default class TrendingTab extends Component{
         if (this.mounted) this.setState({toasting: false});
       },
     };
-    this.loadData();
+    this.loadData(this.props.timeSpan, true);
   }
   componentWillUnmount() {
     this.mounted = false;
   }
-  getFetchUrl = (timeSpan, category) => {
-    return API_URL + category + timeSpan;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.timeSpan !== this.props.timeSpan) {
+      this.loadData(nextProps.timeSpan);
+    }
+  }
+  getFetchUrl = (category, timeSpan) => {
+    return API_URL + category + timeSpan.searchText;
   };
-  loadData = () => {
+  loadData = (timeSpan, isRefresh) => {
     this.setState({isLoading: true});
-    let url = this.getFetchUrl('?since=today', this.props.tabLabel.label);
+    let url = this.getFetchUrl(this.props.tabLabel.label, timeSpan);
     this.dataRepository.fetchRepository(url)
       .then(res=>{
         let items = res.items || [];
@@ -100,7 +105,7 @@ export default class TrendingTab extends Component{
         <FlatList
           data={dataSource}
           renderItem={({item}) => this.renderRow(item)}
-          onRefresh={this.loadData}
+          onRefresh={()=>{this.loadData(this.props.timeSpan)}}
           refreshing={isLoading}
         />
       </View>

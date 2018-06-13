@@ -5,13 +5,27 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  TextInput
 } from 'react-native';
-import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 import NavigationBar from '../../common/NavigationBar';
 import TrendingTab from './TrendingTab'
 import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 import TabBar from "react-native-underline-tabbar";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers
+} from 'react-native-popup-menu';
+import TimeSpan from "../../model/TimeSpan";
+const {Popover} = renderers;
+
+let timeSpanTextArray = [
+  new TimeSpan('Today', '?since=daily'),
+  new TimeSpan('This week', '?since=weekly'),
+  new TimeSpan('This month', '?since=monthly')
+];
 
 export default class TrendingPage extends Component {
   constructor(props) {
@@ -19,9 +33,12 @@ export default class TrendingPage extends Component {
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_language);
     this.state = {
       languages: [],
+      timeSpan: timeSpanTextArray[0]
     };
   }
   static navigationOptions = ({navigation}) => {
+    let { params } = navigation.state;
+    let renderTitleView = params ? params.renderTitleView : ()=>{};
     let renderButton = image => (
       <TouchableOpacity onPress={()=>{navigation.goBack()}}>
         <Image
@@ -32,7 +49,7 @@ export default class TrendingPage extends Component {
     return {
       header: (
         <NavigationBar
-          title="Trending"
+          titleView={renderTitleView()}
           leftButton={
             renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
           }
@@ -43,8 +60,45 @@ export default class TrendingPage extends Component {
     };
   };
   componentDidMount() {
+    this.props.navigation.setParams({
+      renderTitleView: this.renderTitleView
+    });
     this.loadData();
   }
+  onSelectTimeSpan = value => {
+    this.setState({
+      timeSpan: value
+    });
+  };
+  renderTitleView = () => {
+    return (
+        <Menu
+          renderer={Popover}
+          rendererProps={rendererStyles}
+          onSelect={value => this.onSelectTimeSpan(value)}>
+          <MenuTrigger>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 20, color: '#fff', fontWeight: '400'}}>
+                Trending
+              </Text>
+              <Image
+                style={{width: 12, height: 12, marginLeft: 5}}
+                source={require('../../../res/images/ic_spinner_triangle.png')} />
+            </View>
+          </MenuTrigger>
+          <MenuOptions customStyles={optionsStyles}>
+            {
+              timeSpanTextArray.map((item, i) => (
+                <MenuOption
+                  key={i}
+                  value={item}
+                  text={item.showText} />
+              ))
+            }
+          </MenuOptions>
+        </Menu>
+    );
+  };
   loadData = () => {
     this.languageDao.fetch()
       .then(res=>{
@@ -55,7 +109,7 @@ export default class TrendingPage extends Component {
       .catch(e=>console.log(e))
   };
   render() {
-    const {languages} = this.state;
+    const {languages, timeSpan} = this.state;
     let content = (languages && languages.length) ? (
       <ScrollableTabView
         tabBarBackgroundColor='#2196f3'
@@ -73,7 +127,13 @@ export default class TrendingPage extends Component {
           activeTabTextStyle={{color: "#fff"}} />}>
         {
           languages.map((item, i) => (
-            item.checked && <TrendingTab key={i} tabLabel={{label: item.name}} {...this.props} />
+            item.checked && (
+              <TrendingTab
+                key={i}
+                timeSpan={timeSpan}
+                tabLabel={{label: item.name}}
+                {...this.props} />
+            )
           ))
         }
       </ScrollableTabView>
@@ -90,8 +150,26 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
   },
-  text: {
-    fontSize: 20,
-    color: 'red'
-  }
 });
+
+const rendererStyles = {
+  anchorStyle: {
+    backgroundColor: '#343434',
+  }
+};
+
+const optionsStyles = {
+  optionsContainer: {
+    padding: 5,
+    backgroundColor: '#343434',
+  },
+  optionTouchable: {
+    underlayColor: 'gold',
+    activeOpacity: 70,
+  },
+  optionText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '400'
+  },
+};

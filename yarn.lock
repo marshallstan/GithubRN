@@ -4855,6 +4855,10 @@ react-native-htmlview@^0.12.1:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.2"
 
+react-native-popup-menu@^0.13.1:
+  version "0.13.1"
+  resolved "http://r.cnpmjs.org/react-native-popup-menu/download/react-native-popup-menu-0.13.1.tgz#24977beab0247eccab0e10abcd259aadf06e6a22"
+
 react-native-root-siblings@^3.0.0:
   version "3.1.0"
   resolved "http://r.cnpmjs.org/react-native-root-siblings/download/react-native-root-siblings-3.1.0.tgz#194067d37d4d2c824d923148e53922ee6ac2e06f"
