@@ -4,9 +4,12 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 export default class RepositoryCell extends Component{
   constructor(props) {
     super(props);
+    let isFavorite = props.projectModel ? props.projectModel.isFavorite : false;
     this.state = {
-      isFavorite: false,
-      favoriteIcon: require('../../res/images/ic_unstar_transparent.png')
+      isFavorite: isFavorite,
+      favoriteIcon: isFavorite
+        ? require('../../res/images/ic_star.png')
+        : require('../../res/images/ic_unstar_transparent.png')
     };
   }
   setFavoriteState = isFavorite => {
@@ -18,10 +21,13 @@ export default class RepositoryCell extends Component{
     });
   };
   onPressFavorite = () => {
-    this.setFavoriteState(!this.state.isFavorite)
+    let isFavorite = !this.state.isFavorite;
+    this.setFavoriteState(isFavorite);
+    this.props.onFavorite(isFavorite);
   };
   render() {
-    const {data, onSelect} = this.props;
+    const {projectModel, onSelect} = this.props;
+    let data = projectModel && projectModel.item ? projectModel.item : {};
     let favoriteButton = (
       <TouchableOpacity onPress={this.onPressFavorite}>
         <Image

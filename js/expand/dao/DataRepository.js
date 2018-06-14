@@ -65,7 +65,8 @@ export default class DataRepository {
   saveRepository = (url, items, callback) => {
     if (!url || !items) return;
     let wrapData = {items: items, updateAt: new Date().getTime()};
-    AsyncStorage.setItem(url, JSON.stringify(wrapData), callback);
+    AsyncStorage.setItem(url, JSON.stringify(wrapData), callback)
+      .catch(e=>console.log(e));
   };
   isNew = longTime => {
     let cDate = new Date();

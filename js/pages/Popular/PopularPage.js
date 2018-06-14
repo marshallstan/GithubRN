@@ -12,6 +12,10 @@ import NavigationBar from '../../common/NavigationBar';
 import PopularTab from './PopularTab'
 import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 import TabBar from "react-native-underline-tabbar";
+import FavoriteDao from "../../expand/dao/FavoriteDao";
+import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
+
+let favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 export default class PopularPage extends Component {
   constructor(props) {
@@ -73,7 +77,13 @@ export default class PopularPage extends Component {
           activeTabTextStyle={{color: "#fff"}} />}>
         {
           languages.map((item, i) => (
-            item.checked && <PopularTab key={i} tabLabel={{label: item.name}} {...this.props} />
+            item.checked && (
+              <PopularTab
+                key={i}
+                favoriteDao={favoriteDao}
+                tabLabel={{label: item.name}}
+                {...this.props} />
+            )
           ))
         }
       </ScrollableTabView>
