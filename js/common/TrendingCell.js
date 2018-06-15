@@ -3,9 +3,40 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import HTMLView from 'react-native-htmlview';
 
 export default class TrendingCell extends Component{
+  constructor(props) {
+    super(props);
+    let isFavorite = props.projectModel ? props.projectModel.isFavorite : false;
+    this.state = {
+      isFavorite: isFavorite,
+      favoriteIcon: isFavorite
+        ? require('../../res/images/ic_star.png')
+        : require('../../res/images/ic_unstar_transparent.png')
+    };
+  }
+  setFavoriteState = isFavorite => {
+    this.setState({
+      isFavorite: isFavorite,
+      favoriteIcon: isFavorite
+        ? require('../../res/images/ic_star.png')
+        : require('../../res/images/ic_unstar_transparent.png')
+    });
+  };
+  onPressFavorite = () => {
+    let isFavorite = !this.state.isFavorite;
+    this.setFavoriteState(isFavorite);
+    this.props.onFavorite(isFavorite);
+  };
   render() {
-    let {data, onSelect} = this.props;
+    const {projectModel, onSelect} = this.props;
+    let data = projectModel && projectModel.item ? projectModel.item : {};
     let description = `<p>${data.description}</p>`;
+    let favoriteButton = (
+      <TouchableOpacity onPress={this.onPressFavorite}>
+        <Image
+          style={[styles.image, {tintColor: '#2196f3'}]}
+          source={this.state.favoriteIcon} />
+      </TouchableOpacity>
+    );
     return (
       <TouchableOpacity onPress={onSelect} style={styles.container}>
         <View style={styles.cell_container}>
@@ -35,7 +66,7 @@ export default class TrendingCell extends Component{
                 ))
               }
             </View>
-            <Image style={styles.image} source={require('../../res/images/ic_star.png')} />
+            {favoriteButton}
           </View>
         </View>
       </TouchableOpacity>

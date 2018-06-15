@@ -1,23 +1,25 @@
 import React, { Component } from 'react'
 import Toast from 'react-native-root-toast'
-import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository"
 import {View, FlatList, StyleSheet} from 'react-native'
 import TrendingCell from '../../common/TrendingCell'
+import ProjectModel from "../../model/ProjectModel"
+import Utils from "../../util/Utils";
 
 const API_URL = 'https://github.com/trending/';
 
 export default class TrendingTab extends Component{
-  constructor() {
-    super();
-    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
+  constructor(props) {
+    super(props);
+    this.dataRepository = props.dataRepository;
+    this.favoriteDao = props.favoriteDao;
     this.state = {
       dataSource: [],
       isLoading: false,
-      toasting: false
+      toasting: false,
+      favoriteKeys: []
     }
   }
   componentDidMount() {
-    this.mounted = true;
     this.toastingConfig = {
       duration: 500,
       position: -80,
@@ -25,17 +27,43 @@ export default class TrendingTab extends Component{
       animation: true,
       hideOnPress: true,
       onShow: () => {
-        if (this.mounted) this.setState({toasting: true});
+        this.updateState({toasting: true});
       },
       onHidden: () => {
-        if (this.mounted) this.setState({toasting: false});
+        this.updateState({toasting: false});
       },
     };
     this.loadData(this.props.timeSpan, true);
   }
-  componentWillUnmount() {
-    this.mounted = false;
-  }
+  updateState = (obj, callback) => {
+    if (!this) return;
+    this.setState(obj, callback);
+  };
+  getFavoriteKeys = () => {
+    this.favoriteDao.getFavoriteKeys()
+      .then(keys => {
+        if (keys) {
+          this.updateState({favoriteKeys: keys}, this.flushFavoriteState)
+        } else {
+          this.flushFavoriteState();
+        }
+      })
+      .catch(e=>{
+        console.log(e);
+        this.flushFavoriteState();
+      });
+  };
+  flushFavoriteState = () => {
+    let projectModels = [];
+    let items = this.items;
+    items && items.map((item, i) => {
+      projectModels.push(new ProjectModel(item, Utils.checkFavorite(item, this.state.favoriteKeys), i+''))
+    });
+    this.updateState({
+      isLoading: false,
+      dataSource: projectModels
+    });
+  };
   componentWillReceiveProps(nextProps) {
     if (nextProps.timeSpan !== this.props.timeSpan) {
       this.loadData(nextProps.timeSpan);
@@ -45,24 +73,15 @@ export default class TrendingTab extends Component{
     return API_URL + category + timeSpan.searchText;
   };
   loadData = (timeSpan, isRefresh) => {
-    this.setState({isLoading: true});
+    this.updateState({isLoading: true});
     let url = this.getFetchUrl(this.props.tabLabel.label, timeSpan);
     this.dataRepository.fetchRepository(url)
       .then(res=>{
-        let items = res.items || [];
-        items = items.map((d, i)=>{
-          d.key = i+'';
-          return d;
-        });
-        if (this.mounted) {
-          this.setState({
-            dataSource: items,
-            isLoading: false
-          });
-        }
+        this.items = res.items || [];
+        this.getFavoriteKeys();
         if (res.updateAt && !this.dataRepository.isNew(res.updateAt)) {
           Toast.show('Expired!', {...this.toastingConfig, onShow: ()=>{}});
-          this.setState({isLoading: true});
+          this.updateState({isLoading: true});
           return this.dataRepository.fetchNetRepository(url)
         } else if (res.updateAt) {
           Toast.show('Local data!', this.toastingConfig);
@@ -72,29 +91,33 @@ export default class TrendingTab extends Component{
       })
       .then(res=>{
         if (!res || !res.items || !res.items.length) return;
-        let items = res.items.map((d, i)=>{
-          d.key = i+'';
-          return d;
-        });
-        if (this.mounted) {
-          this.setState({
-            dataSource: items,
-            isLoading: false
-          });
-        }
+        this.items = res.items;
+        this.getFavoriteKeys();
         Toast.show('Network data!', this.toastingConfig);
       })
       .catch(err=>{
         console.log(err);
-        this.setState({isLoading: false})
+        this.updateState({isLoading: false})
       });
   };
-  renderRow = data => {
-    return <TrendingCell onSelect={()=>this.onSelect(data)} data={data} />;
+  onFavorite = (item, isFavorite) => {
+    if (isFavorite) {
+      this.favoriteDao.saveFavoriteItem(item.fullName, JSON.stringify(item))
+    } else {
+      this.favoriteDao.removeFavoriteItem(item.fullName);
+    }
   };
-  onSelect = item => {
+  renderRow = projectModel => {
+    return (
+      <TrendingCell
+        onFavorite={isFavorite => this.onFavorite(projectModel.item, isFavorite)}
+        onSelect={()=>this.onSelect(projectModel)}
+        projectModel={projectModel} />
+    );
+  };
+  onSelect = projectModel => {
     this.props.navigation.navigate("RepositoryDetail", {
-      item: item,
+      item: projectModel.item,
       ...this.props
     })
   };

@@ -19,6 +19,12 @@ import {
   renderers
 } from 'react-native-popup-menu';
 import TimeSpan from "../../model/TimeSpan";
+import FavoriteDao from "../../expand/dao/FavoriteDao";
+import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
+import DataRepository from "../../expand/dao/DataRepository";
+
+let favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending);
+let dataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
 const {Popover} = renderers;
 
 let timeSpanTextArray = [
@@ -129,6 +135,8 @@ export default class TrendingPage extends Component {
           languages.map((item, i) => (
             item.checked && (
               <TrendingTab
+                dataRepository={dataRepository}
+                favoriteDao={favoriteDao}
                 key={i}
                 timeSpan={timeSpan}
                 tabLabel={{label: item.name}}
