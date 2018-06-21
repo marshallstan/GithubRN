@@ -42,18 +42,22 @@ export default class PopularTab extends Component{
     this.setState(obj, callback);
   };
   getFavoriteKeys = () => {
-    this.favoriteDao.getFavoriteKeys()
-      .then(keys => {
-        if (keys) {
-          this.updateState({favoriteKeys: keys}, this.flushFavoriteState)
-        } else {
+    return new Promise(res=>{
+      this.favoriteDao.getFavoriteKeys()
+        .then(keys => {
+          if (keys) {
+            this.updateState({favoriteKeys: keys}, this.flushFavoriteState)
+          } else {
+            this.flushFavoriteState();
+          }
+          res();
+        })
+        .catch(e=>{
+          console.log(e);
           this.flushFavoriteState();
-        }
-      })
-      .catch(e=>{
-        console.log(e);
-        this.flushFavoriteState();
-      });
+          res();
+        });
+    });
   };
   flushFavoriteState = () => {
     let projectModels = [];
@@ -69,15 +73,19 @@ export default class PopularTab extends Component{
   loadData = () => {
     this.updateState({isLoading: true});
     let url = URL + this.props.tabLabel.label + QUERY_STR;
+    let result = {};
     this.dataRepository.fetchRepository(url)
       .then(res=>{
+        result = res;
         this.items = res.items || [];
-        this.getFavoriteKeys();
-        if (res.updateAt && !this.dataRepository.isNew(res.updateAt)) {
+        return this.getFavoriteKeys();
+      })
+      .then(()=>{
+        if (result.updateAt && !this.dataRepository.isNew(result.updateAt)) {
           Toast.show('Expired!', {...this.toastingConfig, onShow: ()=>{}});
           this.updateState({isLoading: true});
           return this.dataRepository.fetchNetRepository(url)
-        } else if (res.updateAt) {
+        } else if (result.updateAt) {
           Toast.show('Local data!', this.toastingConfig);
         } else {
           Toast.show('Network data!', this.toastingConfig);
