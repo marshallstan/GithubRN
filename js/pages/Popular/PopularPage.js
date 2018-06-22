@@ -14,8 +14,10 @@ import LanguageDao, {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao';
 import TabBar from "react-native-underline-tabbar";
 import FavoriteDao from "../../expand/dao/FavoriteDao";
 import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
+import DataRepository from "../../expand/dao/DataRepository";
 
 let favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
+let dataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
 
 export default class PopularPage extends Component {
   constructor(props) {
@@ -37,12 +39,13 @@ export default class PopularPage extends Component {
       header: (
         <NavigationBar
           title="Popular"
-          leftButton={
-            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
-          }
-          rightButton={
-            renderButton(require('../../../res/images/ic_star.png'))
-          } />
+          // leftButton={
+          //   renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
+          // }
+          // rightButton={
+          //   renderButton(require('../../../res/images/ic_star.png'))
+          // }
+        />
       ),
     };
   };
@@ -81,6 +84,7 @@ export default class PopularPage extends Component {
               <PopularTab
                 key={i}
                 favoriteDao={favoriteDao}
+                dataRepository={dataRepository}
                 tabLabel={{label: item.name}}
                 {...this.props} />
             )

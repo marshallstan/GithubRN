@@ -13,6 +13,10 @@ export default class TrendingCell extends Component{
         : require('../../res/images/ic_unstar_transparent.png')
     };
   }
+  // componentWillReceiveProps({projectModel}) {
+  //   if (projectModel.isFavorite !== this.state.isFavorite)
+  //     this.setFavoriteState(projectModel.isFavorite);
+  // }
   setFavoriteState = isFavorite => {
     this.setState({
       isFavorite: isFavorite,
@@ -22,19 +26,29 @@ export default class TrendingCell extends Component{
     });
   };
   onPressFavorite = () => {
-    let isFavorite = !this.state.isFavorite;
-    this.setFavoriteState(isFavorite);
+    // let isFavorite = !this.state.isFavorite;
+    // this.setFavoriteState(isFavorite);
+    let isFavorite = !this.props.projectModel.isFavorite;
     this.props.onFavorite(isFavorite);
+  };
+  getIcon = isFavorite => {
+    return isFavorite
+      ? require('../../res/images/ic_star.png')
+      : require('../../res/images/ic_unstar_transparent.png')
   };
   render() {
     const {projectModel, onSelect} = this.props;
     let data = projectModel && projectModel.item ? projectModel.item : {};
     let description = `<p>${data.description}</p>`;
+    let icon = projectModel.isFavorite
+      ? require('../../res/images/ic_star.png')
+      : require('../../res/images/ic_unstar_transparent.png');
     let favoriteButton = (
       <TouchableOpacity onPress={this.onPressFavorite}>
         <Image
           style={[styles.image, {tintColor: '#2196f3'}]}
-          source={this.state.favoriteIcon} />
+          // source={this.state.favoriteIcon} />
+          source={icon} />
       </TouchableOpacity>
     );
     return (

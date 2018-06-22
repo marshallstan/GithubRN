@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Toast from 'react-native-root-toast'
-import DataRepository, {FLAG_STORAGE} from "../../expand/dao/DataRepository"
 import {View, Text, FlatList, Image, StyleSheet} from 'react-native'
 import RepositoryCell from '../../common/RepositoryCell'
 import ProjectModel from "../../model/ProjectModel"
@@ -12,7 +11,7 @@ const QUERY_STR = '&sort=starts';
 export default class PopularTab extends Component{
   constructor(props) {
     super(props);
-    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
+    this.dataRepository = props.dataRepository;
     this.favoriteDao = props.favoriteDao;
     this.state = {
       dataSource: [],
@@ -119,7 +118,7 @@ export default class PopularTab extends Component{
   };
   onSelect = projectModel => {
     this.props.navigation.navigate("RepositoryDetail", {
-      item: projectModel.item,
+      projectModel: projectModel,
       ...this.props
     })
   };

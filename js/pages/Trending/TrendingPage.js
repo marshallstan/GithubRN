@@ -56,12 +56,13 @@ export default class TrendingPage extends Component {
       header: (
         <NavigationBar
           titleView={renderTitleView()}
-          leftButton={
-            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
-          }
-          rightButton={
-            renderButton(require('../../../res/images/ic_star.png'))
-          } />
+          // leftButton={
+          //   renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
+          // }
+          // rightButton={
+          //   renderButton(require('../../../res/images/ic_star.png'))
+          // }
+        />
       ),
     };
   };

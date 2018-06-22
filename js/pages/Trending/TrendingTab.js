@@ -108,24 +108,32 @@ export default class TrendingTab extends Component{
         this.updateState({isLoading: false})
       });
   };
-  onFavorite = (item, isFavorite) => {
+  onFavorite = (projectModel, isFavorite) => {
+    let {dataSource} = this.state;
+    for (let i = 0; i < dataSource.length; i++) {
+      if (dataSource[i].key === projectModel.key) {
+        dataSource[i].isFavorite = isFavorite;
+      }
+    }
+    this.updateState({dataSource: dataSource});
+
     if (isFavorite) {
-      this.favoriteDao.saveFavoriteItem(item.fullName, JSON.stringify(item))
+      this.favoriteDao.saveFavoriteItem(projectModel.item.fullName, JSON.stringify(projectModel.item))
     } else {
-      this.favoriteDao.removeFavoriteItem(item.fullName);
+      this.favoriteDao.removeFavoriteItem(projectModel.item.fullName);
     }
   };
   renderRow = projectModel => {
     return (
       <TrendingCell
-        onFavorite={isFavorite => this.onFavorite(projectModel.item, isFavorite)}
+        onFavorite={isFavorite => this.onFavorite(projectModel, isFavorite)}
         onSelect={()=>this.onSelect(projectModel)}
         projectModel={projectModel} />
     );
   };
   onSelect = projectModel => {
     this.props.navigation.navigate("RepositoryDetail", {
-      item: projectModel.item,
+      projectModel: projectModel,
       ...this.props
     })
   };
