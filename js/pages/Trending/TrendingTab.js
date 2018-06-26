@@ -134,6 +134,7 @@ export default class TrendingTab extends Component{
   onSelect = projectModel => {
     this.props.navigation.navigate("RepositoryDetail", {
       projectModel: projectModel,
+      onFavorite: isFavorite => this.onFavorite(projectModel, isFavorite),
       ...this.props
     })
   };

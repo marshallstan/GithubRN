@@ -19,26 +19,32 @@ export default class RepositoryDetail extends Component {
     let { params } = props.navigation.state;
     this.favoriteDao = params.favoriteDao;
     let item = params && params.projectModel ? params.projectModel.item : {};
-    let projectModel = params ? params.projectModel : {};
     let url = item.html_url || PRE_URL + item.fullName;
     this.state = {
       url: url,
-      canGoBack: false,
-      projectModel: projectModel
+      canGoBack: false
     };
   }
   static navigationOptions = ({navigation}) => {
     let { params } = navigation.state;
     let onBack = params ? params.onBack : ()=>{};
-    let onRightClick = params ? params.onRightClick : ()=>{};
-    let item = params && params.projectModel ? params.projectModel.item : {};
-    let isFavorite = params && params.projectModel ? params.projectModel.isFavorite : false;
+    let onFavorite = params ? params.onFavorite : ()=>{};
+    let projectModel = params ? params.projectModel : {};
+    let item = projectModel ? projectModel.item : {};
+    let isFavorite = projectModel ? projectModel.isFavorite : false;
     let title = item.full_name || item.fullName;
     let favoriteIcon = isFavorite
       ? require('../../../res/images/ic_star.png')
       : require('../../../res/images/ic_star_navbar.png');
+    let onRightPress = () => {
+      onFavorite(!isFavorite);
+      projectModel.isFavorite = !isFavorite;
+      navigation.setParams({
+        projectModel: projectModel
+      });
+    };
     let renderButton = () => (
-      <TouchableOpacity onPress={onRightClick}>
+      <TouchableOpacity onPress={onRightPress}>
         <Image
           style={{width: 23, height: 23, margin: 5}}
           source={favoriteIcon} />
@@ -55,29 +61,9 @@ export default class RepositoryDetail extends Component {
   };
   componentDidMount() {
     this.props.navigation.setParams({
-      onBack: this.onBack,
-      onRightClick: this.onRightClick
+      onBack: this.onBack
     });
   }
-  onRightClick = () => {
-    let {projectModel} = this.state;
-    let item = projectModel.item || {};
-    let id = item.id ? item.id.toString() : item.fullName;
-
-    projectModel.isFavorite = !projectModel.isFavorite;
-    this.setFavoriteState(projectModel);
-
-    if (projectModel.isFavorite) {
-      this.favoriteDao.saveFavoriteItem(id, JSON.stringify(item))
-    } else {
-      this.favoriteDao.removeFavoriteItem(id);
-    }
-  };
-  setFavoriteState = projectModel => {
-    this.props.navigation.setParams({
-      projectModel: projectModel
-    });
-  };
   onBack = () => {
     if (this.state.canGoBack) this.webView.goBack();
     else this.props.navigation.goBack();

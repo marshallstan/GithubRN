@@ -5,29 +5,8 @@ import HTMLView from 'react-native-htmlview';
 export default class TrendingCell extends Component{
   constructor(props) {
     super(props);
-    let isFavorite = props.projectModel ? props.projectModel.isFavorite : false;
-    this.state = {
-      isFavorite: isFavorite,
-      favoriteIcon: isFavorite
-        ? require('../../res/images/ic_star.png')
-        : require('../../res/images/ic_unstar_transparent.png')
-    };
   }
-  // componentWillReceiveProps({projectModel}) {
-  //   if (projectModel.isFavorite !== this.state.isFavorite)
-  //     this.setFavoriteState(projectModel.isFavorite);
-  // }
-  setFavoriteState = isFavorite => {
-    this.setState({
-      isFavorite: isFavorite,
-      favoriteIcon: isFavorite
-        ? require('../../res/images/ic_star.png')
-        : require('../../res/images/ic_unstar_transparent.png')
-    });
-  };
   onPressFavorite = () => {
-    // let isFavorite = !this.state.isFavorite;
-    // this.setFavoriteState(isFavorite);
     let isFavorite = !this.props.projectModel.isFavorite;
     this.props.onFavorite(isFavorite);
   };
@@ -40,15 +19,11 @@ export default class TrendingCell extends Component{
     const {projectModel, onSelect} = this.props;
     let data = projectModel && projectModel.item ? projectModel.item : {};
     let description = `<p>${data.description}</p>`;
-    let icon = projectModel.isFavorite
-      ? require('../../res/images/ic_star.png')
-      : require('../../res/images/ic_unstar_transparent.png');
     let favoriteButton = (
       <TouchableOpacity onPress={this.onPressFavorite}>
         <Image
           style={[styles.image, {tintColor: '#2196f3'}]}
-          // source={this.state.favoriteIcon} />
-          source={icon} />
+          source={this.getIcon(projectModel.isFavorite)} />
       </TouchableOpacity>
     );
     return (
