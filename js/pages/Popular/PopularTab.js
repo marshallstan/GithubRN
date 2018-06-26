@@ -101,17 +101,29 @@ export default class PopularTab extends Component{
         this.updateState({isLoading: false})
       });
   };
-  onFavorite = (item, isFavorite) => {
+  onFavorite = (projectModel, isFavorite) => {
+    let {dataSource} = this.state;
+    console.log(111, dataSource)
+    console.log(222, dataSource[0])
+    for (let i = 0; i < dataSource.length; i++) {
+      if (dataSource[i].key === projectModel.key) {
+        dataSource[i].isFavorite = isFavorite;
+      }
+    }
+    console.log(333, dataSource)
+    console.log(444, dataSource[0])
+    this.updateState({dataSource: dataSource});
+
     if (isFavorite) {
-      this.favoriteDao.saveFavoriteItem(item.id.toString(), JSON.stringify(item))
+      this.favoriteDao.saveFavoriteItem(projectModel.item.id.toString(), JSON.stringify(projectModel.item))
     } else {
-      this.favoriteDao.removeFavoriteItem(item.id.toString());
+      this.favoriteDao.removeFavoriteItem(projectModel.item.id.toString());
     }
   };
   renderRow = projectModel => {
     return (
       <RepositoryCell
-        onFavorite={isFavorite => this.onFavorite(projectModel.item, isFavorite)}
+        onFavorite={isFavorite => this.onFavorite(projectModel, isFavorite)}
         onSelect={()=>this.onSelect(projectModel)}
         projectModel={projectModel} />
     );
@@ -119,6 +131,7 @@ export default class PopularTab extends Component{
   onSelect = projectModel => {
     this.props.navigation.navigate("RepositoryDetail", {
       projectModel: projectModel,
+      onFavorite: isFavorite => this.onFavorite(projectModel, isFavorite),
       ...this.props
     })
   };

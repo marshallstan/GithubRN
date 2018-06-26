@@ -4,35 +4,24 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 export default class RepositoryCell extends Component{
   constructor(props) {
     super(props);
-    let isFavorite = props.projectModel ? props.projectModel.isFavorite : false;
-    this.state = {
-      isFavorite: isFavorite,
-      favoriteIcon: isFavorite
-        ? require('../../res/images/ic_star.png')
-        : require('../../res/images/ic_unstar_transparent.png')
-    };
   }
-  setFavoriteState = isFavorite => {
-    this.setState({
-      isFavorite: isFavorite,
-      favoriteIcon: isFavorite
-        ? require('../../res/images/ic_star.png')
-        : require('../../res/images/ic_unstar_transparent.png')
-    });
-  };
   onPressFavorite = () => {
-    let isFavorite = !this.state.isFavorite;
-    this.setFavoriteState(isFavorite);
+    let isFavorite = !this.props.projectModel.isFavorite;
     this.props.onFavorite(isFavorite);
   };
+  getIcon = isFavorite => {
+    return isFavorite
+      ? require('../../res/images/ic_star.png')
+      : require('../../res/images/ic_unstar_transparent.png')
+  };
   render() {
-    const {projectModel, onSelect} = this.props;
+    let {projectModel, onSelect} = this.props;
     let data = projectModel && projectModel.item ? projectModel.item : {};
     let favoriteButton = (
       <TouchableOpacity onPress={this.onPressFavorite}>
         <Image
           style={[styles.image, {tintColor: '#2196f3'}]}
-          source={this.state.favoriteIcon} />
+          source={this.getIcon(projectModel.isFavorite)} />
       </TouchableOpacity>
     );
     return (
