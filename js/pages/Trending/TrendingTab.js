@@ -109,13 +109,13 @@ export default class TrendingTab extends Component{
       });
   };
   onFavorite = (projectModel, isFavorite) => {
-    let {dataSource} = this.state;
-    for (let i = 0; i < dataSource.length; i++) {
-      if (dataSource[i].key === projectModel.key) {
-        dataSource[i].isFavorite = isFavorite;
+    let [...dataArray] = this.state.dataSource;
+    for (let i = 0; i < dataArray.length; i++) {
+      if (dataArray[i].key === projectModel.key) {
+        dataArray[i].isFavorite = isFavorite;
       }
     }
-    this.updateState({dataSource: dataSource});
+    this.updateState({dataSource: dataArray});
 
     if (isFavorite) {
       this.favoriteDao.saveFavoriteItem(projectModel.item.fullName, JSON.stringify(projectModel.item))

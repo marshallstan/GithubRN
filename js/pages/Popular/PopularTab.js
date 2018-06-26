@@ -102,17 +102,13 @@ export default class PopularTab extends Component{
       });
   };
   onFavorite = (projectModel, isFavorite) => {
-    let {dataSource} = this.state;
-    console.log(111, dataSource)
-    console.log(222, dataSource[0])
-    for (let i = 0; i < dataSource.length; i++) {
-      if (dataSource[i].key === projectModel.key) {
-        dataSource[i].isFavorite = isFavorite;
+    let [...dataArray] = this.state.dataSource;
+    for (let i = 0; i < dataArray.length; i++) {
+      if (dataArray[i].key === projectModel.key) {
+        dataArray[i].isFavorite = isFavorite;
       }
     }
-    console.log(333, dataSource)
-    console.log(444, dataSource[0])
-    this.updateState({dataSource: dataSource});
+    this.updateState({dataSource: dataArray});
 
     if (isFavorite) {
       this.favoriteDao.saveFavoriteItem(projectModel.item.id.toString(), JSON.stringify(projectModel.item))
