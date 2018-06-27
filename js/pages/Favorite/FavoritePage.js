@@ -2,39 +2,49 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  Image,
-  TouchableOpacity
 } from 'react-native';
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import NavigationBar from '../../common/NavigationBar';
-import WebViewTest from '../../common/WebViewTest';
+import FavoriteTab from './FavoriteTab'
+import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
+
 
 export default class FavoritePage extends Component {
   static navigationOptions = ({navigation}) => {
-    let renderButton = image => (
-      <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-        <Image
-          style={{width: 23, height: 23, margin: 5}}
-          source={image} />
-      </TouchableOpacity>
-    );
     return {
       header: (
-        <NavigationBar
-          title="Favorite"
-          leftButton={
-            renderButton(require('../../../res/images/ic_arrow_back_white_36pt.png'))
-          }
-          rightButton={
-            renderButton(require('../../../res/images/ic_star.png'))
-          } />
+        <NavigationBar title="Favorite" />
       ),
     };
   };
   render() {
     return (
       <View style={styles.page}>
-        <WebViewTest />
+        <ScrollableTabView
+          tabBarBackgroundColor='#2196f3'
+          tabBarActiveTextColor='#fff'
+          tabBarInactiveTextColor='mintcream'
+          tabBarUnderlineStyle={{
+            backgroundColor: '#e7e7e7',
+            height: 2,
+          }}
+          renderTabBar={()=>
+            <DefaultTabBar
+              tabBarStyle={{marginTop: 0, elevation: 2}}
+              tabMargin={35}
+              underlineColor='#e7e7e7'
+              tabBarTextStyle={{color: "#eee"}}
+              activeTabTextStyle={{color: "#fff"}} />}
+        >
+          <FavoriteTab
+            tabLabel='Popular'
+            flag={FLAG_STORAGE.flag_popular}
+            navigation={this.props.navigation} />
+          <FavoriteTab
+            tabLabel='Trending'
+            flag={FLAG_STORAGE.flag_trending}
+            navigation={this.props.navigation} />
+        </ScrollableTabView>
       </View>
     );
   }

@@ -39,24 +39,27 @@ export default class FavoriteDao {
       .catch(err=>console.log(err));
   }
   getFavoriteKeys(){
-    return AsyncStorage.getItem(this.favoriteKey)
-      .then(res => {
-        return (JSON.parse(res));
-      })
-      .catch(e=>console.log(e));
+    return new Promise((resolve, reject) => {
+      AsyncStorage.getItem(this.favoriteKey)
+        .then(res => {
+          resolve(JSON.parse(res));
+        })
+        .catch(e=>{
+          reject(e);
+        });
+    });
   }
   getAllItems() {
-    return new Promise((resolve,reject)=> {
+    return new Promise((resolve, reject)=> {
       this.getFavoriteKeys()
         .then(keys=>{
           let items = [];
           if (keys) {
             AsyncStorage.multiGet(keys, (err, stores) => {
               try {
-                stores.map((result, i, store) => {
-                  let key = store[i][0];
-                  let value = store[i][1];
-                  if (value)items.push(JSON.parse(value));
+                stores.map(result => {
+                  let value = result[1];
+                  if (value) items.push(JSON.parse(value));
                 });
                 resolve(items);
               } catch (e) {
@@ -67,7 +70,9 @@ export default class FavoriteDao {
             resolve(items);
           }
         })
-        .catch(e=>{reject(e)})
+        .catch(e=>{
+          reject(e)
+        })
     })
   }
 }
