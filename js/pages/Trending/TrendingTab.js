@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Toast from 'react-native-root-toast'
-import {View, FlatList, StyleSheet} from 'react-native'
+import {View, FlatList, StyleSheet, DeviceEventEmitter} from 'react-native'
 import TrendingCell from '../../common/TrendingCell'
 import ProjectModel from "../../model/ProjectModel"
 import Utils from "../../util/Utils";
@@ -34,6 +34,14 @@ export default class TrendingTab extends Component{
       },
     };
     this.loadData(this.props.timeSpan, true);
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged_trending', projectModel => {
+      this.onFavorite(projectModel, false);
+    });
+  }
+  componentWillUnmount() {
+    if (this.listener) {
+      this.listener.remove();
+    }
   }
   updateState = (obj, callback) => {
     if (!this) return;

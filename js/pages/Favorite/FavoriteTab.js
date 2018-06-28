@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, FlatList, StyleSheet, Text} from 'react-native'
+import {View, FlatList, StyleSheet, Text, DeviceEventEmitter} from 'react-native'
 import RepositoryCell from '../../common/RepositoryCell'
 import ProjectModel from '../../model/ProjectModel'
 import FavoriteDao from '../../expand/dao/FavoriteDao'
@@ -51,14 +51,21 @@ export default class FavoriteTab extends Component{
     }
     this.updateState({dataSource: dataArray});
 
-    let key = projectModel.item.fullName || projectModel.item.id.toString();
-    if (isFavorite) {
-      this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item))
-    } else {
-      this.favoriteDao.removeFavoriteItem(key);
-    }
+    // let key = projectModel.item.fullName || projectModel.item.id.toString();
+    // if (isFavorite) {
+    //   this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item))
+    // } else {
+    //   this.favoriteDao.removeFavoriteItem(key);
+    // }
 
-    updateArray(this.unFavoriteItems, projectModel.item)
+    updateArray(this.unFavoriteItems, projectModel.item);
+    if (this.unFavoriteItems.length) {
+      if (this.props.flag === FLAG_STORAGE.flag_popular) {
+        DeviceEventEmitter.emit('favoriteChanged_popular', projectModel);
+      } else {
+        DeviceEventEmitter.emit('favoriteChanged_trending', projectModel);
+      }
+    }
   };
   renderRow = projectModel => {
     let CellComponent = this.props.flag === FLAG_STORAGE.flag_popular

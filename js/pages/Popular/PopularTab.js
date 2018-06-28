@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Toast from 'react-native-root-toast'
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native'
+import {View, FlatList, StyleSheet, DeviceEventEmitter} from 'react-native'
 import RepositoryCell from '../../common/RepositoryCell'
 import ProjectModel from "../../model/ProjectModel"
 import Utils from '../../util/Utils'
@@ -35,6 +35,14 @@ export default class PopularTab extends Component{
       },
     };
     this.loadData();
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged_popular', projectModel => {
+      this.onFavorite(projectModel, false);
+    });
+  }
+  componentWillUnmount() {
+    if (this.listener) {
+      this.listener.remove();
+    }
   }
   updateState = (obj, callback) => {
     if (!this) return;
