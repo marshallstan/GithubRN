@@ -112,7 +112,7 @@ export default class PopularTab extends Component{
   onFavorite = (projectModel, isFavorite) => {
     let [...dataArray] = this.state.dataSource;
     for (let i = 0; i < dataArray.length; i++) {
-      if (dataArray[i].key === projectModel.key) {
+      if (dataArray[i].item.id === projectModel.item.id) {
         dataArray[i].isFavorite = isFavorite;
       }
     }

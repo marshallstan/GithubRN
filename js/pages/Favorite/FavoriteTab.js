@@ -45,8 +45,14 @@ export default class FavoriteTab extends Component{
   onFavorite = (projectModel, isFavorite) => {
     let [...dataArray] = this.state.dataSource;
     for (let i = 0; i < dataArray.length; i++) {
-      if (dataArray[i].key === projectModel.key) {
-        dataArray.splice(i, 1);
+      if (dataArray[i].item.fullName) {
+        if (dataArray[i].item.fullName === projectModel.item.fullName) {
+          dataArray.splice(i, 1);
+        }
+      } else {
+        if (dataArray[i].item.id === projectModel.item.id) {
+          dataArray.splice(i, 1);
+        }
       }
     }
     this.updateState({dataSource: dataArray});

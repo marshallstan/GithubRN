@@ -119,7 +119,7 @@ export default class TrendingTab extends Component{
   onFavorite = (projectModel, isFavorite) => {
     let [...dataArray] = this.state.dataSource;
     for (let i = 0; i < dataArray.length; i++) {
-      if (dataArray[i].key === projectModel.key) {
+      if (dataArray[i].item.fullName === projectModel.item.fullName) {
         dataArray[i].isFavorite = isFavorite;
       }
     }
