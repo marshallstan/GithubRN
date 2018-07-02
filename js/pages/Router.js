@@ -9,6 +9,7 @@ import {HomePage} from './HomePage';
 import CustomKeyPage from './My/CustomKeyPage';
 import SortKeyPage from './My/SortKeyPage';
 import RepositoryDetail from "./Popular/RepositoryDetail";
+import AboutPage from "./about/AboutPage";
 
 export const Routers = StackNavigator(
   {
@@ -29,6 +30,9 @@ export const Routers = StackNavigator(
     },
     RepositoryDetail:{
       screen: RepositoryDetail
+    },
+    AboutPage: {
+      screen: AboutPage
     }
   }, {
     initialRouteName: 'WelcomePage',

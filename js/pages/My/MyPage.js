@@ -54,9 +54,9 @@ export default class MyPage extends Component {
       // case MORE_MENU.About_Author:
       //   TargetComponent = AboutMePage;
       //   break;
-      // case MORE_MENU.About:
-      //   TargetComponent = AboutPage;
-      //   break;
+      case MORE_MENU.About:
+        TargetComponent = 'AboutPage';
+        break;
       // case 'Update':
       //   this.update();
       //   break;
