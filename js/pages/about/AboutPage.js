@@ -7,9 +7,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform
 } from 'react-native'
-
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
+import {getSettingItem, getButton} from '../../util/ViewUtil'
+import {MORE_MENU} from '../../common/MoreMenu'
+import {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao'
+import GlobalStyles from "../../../res/styles/GlobalStyles";
 
 export default class AboutPage extends Component {
   constructor(props) {
@@ -53,27 +57,74 @@ export default class AboutPage extends Component {
     );
     config.renderFixedHeader = () => (
       <View key="fixed-header" style={styles.fixedSection}>
-        <Text style={styles.fixedSectionText}
-              onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
-          Scroll to top
-        </Text>
+        {getButton(()=>{this.props.navigation.goBack()})}
       </View>
     );
     return config;
   };
-  renderView = params => {
+  onClick = tab => {
+    let TargetComponent, params = {menuType: tab};
+    switch (tab) {
+      case MORE_MENU.Website:
+        TargetComponent = 'CustomKeyPage';
+        break;
+      case MORE_MENU.About_Author:
+        TargetComponent = 'CustomKeyPage';
+        break;
+      case MORE_MENU.Feedback:
+        TargetComponent = 'CustomKeyPage';
+        break;
+    }
+    if (TargetComponent) {
+      this.props.navigation.navigate(TargetComponent, params);
+    }
+  };
+  renderView = (contentView, params) => {
     let renderConfig = this.getParallaxRenderConfig(params);
     return (
       <ParallaxScrollView
         headerBackgroundColor="#333"
+        backgroundColor="#2196f3"
         stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
         parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
         backgroundSpeed={10}
-        {...renderConfig} />
+        {...renderConfig} >
+        {contentView}
+      </ParallaxScrollView>
     );
   };
   render() {
-    return this.renderView({
+    let content = (
+      <View>
+        {getSettingItem(
+          ()=>this.onClick(MORE_MENU.Website),
+          require('../../../res/images/ic_computer.png'),
+          MORE_MENU.Website,
+          {tintColor: '#2196f3'},
+          null
+        )}
+        <View style={GlobalStyles.line} />
+
+        {getSettingItem(
+          ()=>this.onClick(MORE_MENU.About_Author),
+          require('../My/img/ic_insert_emoticon.png'),
+          MORE_MENU.About_Author,
+          {tintColor: '#2196f3'},
+          null
+        )}
+        <View style={GlobalStyles.line} />
+
+        {getSettingItem(
+          ()=>this.onClick(MORE_MENU.Feedback),
+          require('../../../res/images/ic_feedback.png'),
+          MORE_MENU.Feedback,
+          {tintColor: '#2196f3'},
+          null
+        )}
+        <View style={GlobalStyles.line} />
+      </View>
+    );
+    return this.renderView(content, {
       name: 'Github Repository',
       description: 'An app',
       avatar: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531127900&di=1924c3b10b4bb587d5833cb3eddd5564&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.overdope.com%2Fwp-content%2Fuploads%2F2016%2F08%2F2016-08-22_153005.png',
@@ -84,27 +135,16 @@ export default class AboutPage extends Component {
 
 const window = Dimensions.get('window');
 
-const AVATAR_SIZE = 120;
-const ROW_HEIGHT = 60;
-const PARALLAX_HEADER_HEIGHT = 350;
-const STICKY_HEADER_HEIGHT = 70;
+const AVATAR_SIZE = 90;
+const PARALLAX_HEADER_HEIGHT = 270;
+const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios + 20 : GlobalStyles.nav_bar_height_android;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black'
-  },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: window.width,
-    height: PARALLAX_HEADER_HEIGHT
-  },
   stickySection: {
     height: STICKY_HEADER_HEIGHT,
-    width: 300,
-    justifyContent: 'flex-end'
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
   },
   stickySectionText: {
     color: 'white',
@@ -113,21 +153,24 @@ const styles = StyleSheet.create({
   },
   fixedSection: {
     position: 'absolute',
-    bottom: 10,
-    right: 10
-  },
-  fixedSectionText: {
-    color: '#999',
-    fontSize: 20
+    bottom: 0,
+    right: 0,
+    left: 0,
+    top: 0,
+    paddingRight: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    justifyContent: 'space-between'
   },
   parallaxHeader: {
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 100
+    paddingTop: 60
   },
   avatar: {
-    marginBottom: 10,
+    marginBottom: 5,
     borderRadius: AVATAR_SIZE / 2
   },
   sectionSpeakerText: {
@@ -137,19 +180,8 @@ const styles = StyleSheet.create({
   },
   sectionTitleText: {
     color: 'white',
-    fontSize: 18,
-    paddingVertical: 5
-  },
-  row: {
-    overflow: 'hidden',
-    paddingHorizontal: 10,
-    height: ROW_HEIGHT,
-    backgroundColor: 'white',
-    borderColor: '#ccc',
-    borderBottomWidth: 1,
-    justifyContent: 'center'
-  },
-  rowText: {
-    fontSize: 20
+    fontSize: 16,
+    marginLeft: 10,
+    marginRight: 10,
   }
 });

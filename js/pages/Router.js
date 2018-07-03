@@ -32,7 +32,10 @@ export const Routers = StackNavigator(
       screen: RepositoryDetail
     },
     AboutPage: {
-      screen: AboutPage
+      screen: AboutPage,
+      navigationOptions: {
+        header: null
+      }
     }
   }, {
     initialRouteName: 'WelcomePage',
