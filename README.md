@@ -1,2 +1,2 @@
-# testApp
-react native TestApp
+# GithubRN
+react native Github
